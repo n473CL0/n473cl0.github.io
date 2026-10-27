@@ -1,0 +1,513 @@
+/* ==========================================================================
+   OLD WEB SKIN
+   Web 1.0 homepage touches layered over the base layout: a tiled desktop,
+   bevelled buttons, WordArt, a marquee, rainbow rules and 88x31 buttons.
+   Colours come from theme/_oldweb_light.scss and theme/_oldweb_dark.scss.
+   ========================================================================== */
+
+$ow-page-width              : 1100px;
+
+@mixin ow-raised {
+  box-shadow: inset -1px -1px var(--ow-dark-shadow), inset 1px 1px var(--ow-highlight),
+              inset -2px -2px var(--ow-shadow), inset 2px 2px var(--ow-light);
+}
+
+@mixin ow-sunken {
+  box-shadow: inset -1px -1px var(--ow-highlight), inset 1px 1px var(--ow-dark-shadow),
+              inset -2px -2px var(--ow-light), inset 2px 2px var(--ow-shadow);
+}
+
+@mixin ow-button {
+  color: var(--ow-face-text);
+  font-family: $ow-ui-font;
+  background: var(--ow-face);
+  border: 0;
+  border-radius: 0;
+  @include ow-raised;
+
+  &:active {
+    @include ow-sunken;
+  }
+}
+
+/*
+   Page
+   ========================================================================== */
+
+/* on html rather than body, so the tiles also fill the space _main.js reserves for the footer */
+html {
+  background-color: var(--ow-desktop-color);
+  background-image: var(--ow-desktop);
+}
+
+body {
+  /* greedy-navigation.js pads the body for a fixed masthead; this one scrolls with the page */
+  padding-top: 0 !important;
+  padding-bottom: 0;
+  background: transparent;
+}
+
+::selection {
+  color: var(--ow-select-text);
+  background: var(--ow-select-bg);
+}
+
+a:visited {
+  color: var(--global-link-color-visited);
+}
+
+a:hover,
+a:active {
+  color: var(--global-link-color-hover);
+}
+
+/* the dotted focus rectangle of old browsers, for keyboard users only */
+a:focus,
+button:focus {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px dotted currentColor;
+  outline-offset: 2px;
+}
+
+hr {
+  height: 4px;
+  margin: 0.5em 0 1.5em;
+  border: 0;
+  background: $ow-rainbow;
+}
+
+.page__title {
+  color: var(--ow-heading);
+  font-size: $type-size-2;
+  text-shadow: 2px 2px 0 var(--ow-heading-shadow);
+}
+
+.archive h1,
+.archive h2,
+.archive h3,
+.page__content h1,
+.page__content h2,
+.page__content h3 {
+  color: var(--ow-heading);
+}
+
+.page__content h2 {
+  border-bottom: 2px groove var(--ow-panel-border);
+}
+
+/* the page itself sits in a bordered "table" on the desktop */
+#main {
+  margin-top: 1.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  padding-top: 1.5em;
+  padding-bottom: 1em;
+  -webkit-animation: none;
+          animation: none;
+  background-color: var(--global-bg-color);
+  border: 3px ridge var(--ow-panel-border);
+
+  @include breakpoint($large) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @include breakpoint($x-large) {
+    max-width: $ow-page-width;
+  }
+}
+
+.page__hero,
+.page__hero--overlay {
+  -webkit-animation: none;
+          animation: none;
+}
+
+/*
+   Masthead
+   ========================================================================== */
+
+.masthead {
+  position: relative;
+  -webkit-animation: none;
+          animation: none;
+  color: var(--ow-bar-text);
+  background: var(--ow-bar-bg);
+  @include ow-raised;
+
+  &::after {
+    display: none;
+  }
+
+  &__inner-wrap {
+    font-family: $ow-ui-font;
+
+    @include breakpoint($x-large) {
+      max-width: $ow-page-width;
+    }
+  }
+}
+
+.masthead__menu-item {
+  background-color: transparent;
+}
+
+.greedy-nav {
+  background: transparent;
+
+  button {
+    top: 0.25rem;
+    height: 2rem;
+    @include ow-button;
+  }
+
+  .visible-links a:before {
+    display: none;
+  }
+
+  .masthead__menu-item:not(.masthead__menu-item--lg) {
+    a,
+    a:visited,
+    a:hover {
+      margin: 0 0 0 0.5rem;
+      padding: 0.3rem 0.9rem;
+      font-size: $type-size-6;
+      @include ow-button;
+    }
+
+    &.selected a {
+      font-weight: bold;
+      border-bottom: 0;
+      background: var(--ow-light);
+      @include ow-sunken;
+    }
+  }
+
+  .visible-links #theme-toggle a {
+    width: auto;
+  }
+
+  /* the site title is WordArt, not a button */
+  .masthead__menu-item--lg a,
+  .masthead__menu-item--lg a:visited,
+  .masthead__menu-item--lg a:hover,
+  .masthead__menu-item--lg.selected a {
+    margin: 0 1rem 0 0;
+    padding: 0.1rem 0.2rem 0.1rem 0;
+    color: #ff0000;
+    font-family: $ow-wordart-font;
+    font-size: $type-size-3;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    background: $ow-rainbow;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 0;
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.8));
+  }
+
+  /* overflow menu, drawn like a Windows 95 menu */
+  .hidden-links {
+    margin-top: 2px;
+    padding: 3px;
+    border: 0;
+    background: var(--ow-face);
+    @include ow-raised;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+
+    li {
+      border-bottom: 0;
+    }
+
+    .masthead__menu-item a,
+    .masthead__menu-item.selected a {
+      margin: 0;
+      padding: 0.4rem 1.5rem;
+      color: var(--ow-face-text);
+      font-size: $type-size-5;
+      background: none;
+      box-shadow: none;
+
+      &:hover {
+        color: var(--ow-select-text);
+        background: var(--ow-select-bg);
+      }
+    }
+  }
+}
+
+.navicon,
+.navicon:before,
+.navicon:after {
+  background: var(--ow-face-text);
+}
+
+/* scrolling welcome banner */
+.masthead__marquee {
+  overflow: hidden;
+  padding: 0.25em 0;
+  color: var(--ow-marquee-text);
+  font-family: $ow-fun-font;
+  font-size: $type-size-6;
+  font-weight: bold;
+  white-space: nowrap;
+  background: var(--ow-marquee-bg);
+  border-top: 1px solid var(--ow-shadow);
+
+  span {
+    display: inline-block;
+    padding-left: 100%;
+    -webkit-animation: ow-marquee 30s linear infinite;
+            animation: ow-marquee 30s linear infinite;
+  }
+
+  &:hover span {
+    -webkit-animation-play-state: paused;
+            animation-play-state: paused;
+  }
+}
+
+@-webkit-keyframes ow-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes ow-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead__marquee {
+    text-align: center;
+    white-space: normal;
+
+    span {
+      padding-left: 0;
+      -webkit-animation: none;
+              animation: none;
+    }
+  }
+}
+
+/*
+   Sidebar
+   ========================================================================== */
+
+.sidebar {
+  /* sits in the page like a table cell, and sticks while the content scrolls past */
+  @media screen and (min-width: $sidebar-screen-min-width) {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1em;
+    height: auto;
+    overflow-y: visible;
+  }
+
+  @include breakpoint($large) {
+    padding: 0.75em;
+    padding-top: 0.75em !important;  // overrides the masthead offset set by greedy-navigation.js
+    color: var(--ow-bar-text);
+    background: var(--ow-bar-bg);
+    @include ow-raised;
+  }
+}
+
+.author__avatar img {
+  border-radius: 0;
+
+  @include breakpoint($large) {
+    padding: 0;
+    border: 3px ridge var(--ow-panel-border);
+  }
+}
+
+.author__urls a {
+  color: var(--global-link-color);
+  text-decoration: underline;
+
+  &:visited {
+    color: var(--global-link-color-visited);
+  }
+
+  &:hover {
+    color: var(--global-link-color-hover);
+  }
+}
+
+/*
+   Lists, tables and buttons
+   ========================================================================== */
+
+/* a shiny ball bullet in front of every project */
+.archive__item-title::before {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.4em;
+  vertical-align: 0.1em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, var(--ow-bullet) 45%, #000);
+}
+
+table {
+  border: 2px outset var(--ow-panel-border);
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+thead {
+  background-color: var(--global-thead-color);
+  border-bottom: 0;
+}
+
+th,
+td {
+  border: 1px inset var(--ow-panel-border);
+}
+
+.btn,
+.btn--inverse {
+  color: var(--ow-face-text) !important;
+  border: 0 !important;
+  @include ow-button;
+
+  &:hover {
+    color: var(--ow-face-text) !important;
+    background-color: var(--ow-face);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background: var(--ow-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ow-face);
+  @include ow-raised;
+}
+
+/*
+   Footer
+   ========================================================================== */
+
+.page__footer {
+  position: relative;
+  bottom: auto;
+  margin-top: 1.5em;
+  -webkit-animation: none;
+          animation: none;
+  color: var(--ow-bar-text);
+  background-color: var(--ow-bar-bg);
+  border-top: 0;
+  @include ow-raised;
+
+  footer {
+    @include breakpoint($x-large) {
+      max-width: $ow-page-width;
+    }
+  }
+
+  a {
+    color: var(--global-link-color);
+    text-decoration: underline;
+
+    &:visited {
+      color: var(--global-link-color-visited);
+    }
+
+    &:hover {
+      color: var(--global-link-color-hover);
+    }
+  }
+
+  .fas,
+  .fab,
+  .far,
+  .fal {
+    color: inherit;
+  }
+}
+
+.page__footer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.75em;
+}
+
+/* 88x31 buttons */
+.page__footer .button88 {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 31px;
+  overflow: hidden;
+  font-family: Verdana, Geneva, sans-serif;
+  line-height: 1.1;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px rgba(255, 255, 255, 0.5), inset -1px -1px rgba(0, 0, 0, 0.4);
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  small {
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  strong {
+    font-family: "Arial Black", Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  &--jekyll,
+  &--jekyll:visited,
+  &--jekyll:hover {
+    color: #fff;
+    background: linear-gradient(#e03030, #900);
+  }
+
+  &--github,
+  &--github:visited,
+  &--github:hover {
+    color: #fff;
+    background: linear-gradient(#444, #111);
+  }
+
+  &--feed,
+  &--feed:visited,
+  &--feed:hover {
+    color: #fff;
+    background: linear-gradient(#ff8c1a, #e65c00);
+  }
+
+  &--browser {
+    color: #000;
+    background: #fff;
+
+    strong {
+      font-size: 10px;
+    }
+  }
+}

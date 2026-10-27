@@ -6,14 +6,17 @@
  *
  * Note that the files are processed in the order they are imported, so they are partly
    sorted by the dependencies. Also, the first two lines of the file are required by Jekyll.
+ *
+ * Old Web styling: the oldweb theme replaces the `site_theme` colours from _config.yml,
+   and layout/oldweb (imported last) adds the Web 1.0 touches on top of the base layout.
  */
 
 @import
     "vendor/breakpoint/breakpoint",
 
     "themes",
-    "theme/{{ site.site_theme | default: 'default' | append: '_light' }}",
-    "theme/{{ site.site_theme | default: 'default' | append: '_dark' }}",
+    "theme/oldweb_light",
+    "theme/oldweb_dark",
 
     "include/mixins",
     "vendor/susy/susy",
@@ -35,5 +38,7 @@
     "layout/page",
     "layout/archive",
     "layout/sidebar",
-    "layout/json_cv"
+    "layout/json_cv",
+
+    "layout/oldweb"
 ;

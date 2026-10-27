@@ -1,0 +1,73 @@
+/* ==========================================================================
+    OLD WEB THEME - DARK VERSION
+    ========================================================================== */
+
+/* Color codes used for the theme */
+$primary-color              : #00ffff;
+$gray                       : #808080;
+$dark-gray                  : #404040;
+$darker-gray                : #000;
+$light-gray                 : #c0c0c0;
+$lighter-gray               : #dfdfdf;
+
+/* Tiled desktop: three starfield tiles of different sizes, so the repeat is harder to spot */
+$desktop-tile               : url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='293' height='293'><path d='M71 180h1v7h-1zM68 183h7v1h-7zM221 49h1v5h-1zM219 51h5v1h-5z' fill='%23ffff99'/><path d='M180 250h2v2h-2z' fill='%23aaaaff'/></svg>"),
+                              url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='97' height='97'><g fill='%23666'><path d='M20 30h1v1h-1zM61 70h1v1h-1zM85 15h1v1h-1zM40 88h1v1h-1z'/></g></svg>"),
+                              url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><g fill='%23fff'><path d='M13 22h1v1h-1zM47 91h1v1h-1zM88 14h1v1h-1zM121 63h1v1h-1zM150 130h1v1h-1zM30 140h1v1h-1zM67 52h1v1h-1zM104 118h1v1h-1zM140 28h1v1h-1zM8 77h1v1h-1zM70 128h2v2h-2zM115 40h2v2h-2z'/></g><g fill='%23999'><path d='M25 55h1v1h-1zM95 85h1v1h-1zM135 95h1v1h-1zM55 10h1v1h-1zM80 155h1v1h-1z'/></g></svg>");
+
+/* Color codes used for the site */
+$danger-color               : #ff0000;
+$info-color                 : #00ffff;
+$notice-color               : #c0c0c0;
+$success-color              : #00ff00;
+$warning-color              : #ffff00;
+
+/* Other basic settings for the template */
+$border-radius              : 0;
+$box-shadow                 : none;
+$global-transition          : none;
+$masthead-height            : 0;
+$navicon-width              : 20px;
+$navicon-height             : 3px;
+$sidebar-link-max-width     : 250px;
+$sidebar-screen-min-width   : 1024px;
+
+/* Old Web dark theme for the site: starfield desktop, black page, neon links */
+html[data-theme="dark"] {
+    --global-base-color                 : #{$primary-color};
+    --global-bg-color                   : #000;
+    --global-footer-bg-color            : #000080;
+    --global-border-color               : #{$gray};
+    --global-dark-border-color          : #{$light-gray};
+    --global-code-background-color      : #000;
+    --global-code-text-color            : #00ff00;
+    --global-fig-caption-color          : #{$light-gray};
+    --global-link-color                 : #00ffff;
+    --global-link-color-hover           : #00ff00;
+    --global-link-color-visited         : #ff00ff;
+    --global-masthead-link-color        : #000;
+    --global-masthead-link-color-hover  : #000;
+    --global-text-color                 : #fff;
+    --global-text-color-light           : #{$light-gray};
+    --global-thead-color                : #000080;
+
+    --ow-face                           : #{$light-gray};
+    --ow-face-text                      : #000;
+    --ow-highlight                      : #fff;
+    --ow-light                          : #{$lighter-gray};
+    --ow-shadow                         : #{$gray};
+    --ow-dark-shadow                    : #000;
+    --ow-select-bg                      : #ff00ff;
+    --ow-select-text                    : #000;
+
+    --ow-desktop-color                  : #000;
+    --ow-desktop                        : #{$desktop-tile};
+    --ow-bar-bg                         : #000080;
+    --ow-bar-text                       : #fff;
+    --ow-panel-border                   : #{$gray};
+    --ow-heading                        : #ffff00;
+    --ow-heading-shadow                 : #c00000;
+    --ow-marquee-bg                     : #000;
+    --ow-marquee-text                   : #00ff00;
+    --ow-bullet                         : #00ff00;
+}
