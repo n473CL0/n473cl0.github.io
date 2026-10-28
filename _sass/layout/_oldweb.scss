@@ -396,12 +396,14 @@ hr {
           animation-play-state: paused;
 }
 
-/* paused, or for anyone who prefers less motion: the whole message, still and centred */
+/* paused, or for anyone who prefers less motion: the message still and centred, kept to one line
+   (trimmed with an ellipsis on narrow screens) so the banner never grows taller */
 @mixin ow-marquee-still {
   text-align: center;
-  white-space: normal;
+  text-overflow: ellipsis;
 
   span {
+    display: inline;
     padding-left: 0;
     -webkit-animation: none;
             animation: none;
