@@ -1,86 +1,98 @@
 /* ==========================================================================
     OLD WEB THEME - LIGHT VERSION
+    A space-age receiver on 70s wood panelling, with a backlit dial face
     ========================================================================== */
 
-/* Typefaces of a late-90s homepage: default serif body, Arial headings */
-$serif                      : "Times New Roman", Times, serif;
-$sans-serif                 : Arial, Helvetica, sans-serif;
+/* Typefaces: printed-panel sans for reading, Michroma for the device lettering */
+$serif                      : Georgia, Times, serif;
+$sans-serif                 : "Helvetica Neue", Helvetica, Arial, sans-serif;
 $sans-serif-narrow          : $sans-serif;
 $monospace                  : "Courier New", Courier, monospace;
-$global-font-family         : $serif;
+$global-font-family         : $sans-serif;
 $header-font-family         : $sans-serif;
-$caption-font-family        : $serif;
+$caption-font-family        : $sans-serif;
 
-$ow-ui-font                 : Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-$ow-wordart-font            : Impact, Haettenschweiler, "Arial Black", sans-serif;
-$ow-fun-font                : "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
-$ow-rainbow                 : linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00c000, #0080ff, #8000ff, #ff00ff);
+$ow-space-font              : "Michroma", "Eurostile", "Microgramma", "Arial Black", sans-serif;
+$ow-led-font                : "VT323", "Courier New", monospace;
+$ow-chrome                  : linear-gradient(180deg, #fff 0%, #c8c8c8 22%, #f6f6f6 45%, #858585 70%, #e4e4e4 100%);
 
 /* Color codes used for the theme */
-$primary-color              : #000080;
-$gray                       : #808080;
-$dark-gray                  : #404040;
-$darker-gray                : #000;
-$light-gray                 : #c0c0c0;
-$lighter-gray               : #dfdfdf;
-
-/* Tiled desktop: a dithered diamond pattern */
-$desktop-tile               : url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 5l7 7-7 7-7-7z' fill='%23007676'/><path d='M0 0h2v2H0z' fill='%2300a0a0'/></svg>");
+$primary-color              : #1f4fa8;
+$gray                       : #8a8170;
+$dark-gray                  : #5a5244;
+$darker-gray                : #1e1b16;
+$light-gray                 : #cbbd96;
+$lighter-gray               : #efe4c6;
 
 /* Color codes used for the site */
-$danger-color               : #ff0000;
-$info-color                 : #000080;
-$notice-color               : #808080;
-$success-color              : #008000;
-$warning-color              : #ff8000;
+$danger-color               : #c0281c;
+$info-color                 : #1f4fa8;
+$notice-color               : #8a8170;
+$success-color              : #3a7d2c;
+$warning-color              : #d98a1c;
 
 /* Other basic settings for the template */
-$border-radius              : 0;
+$border-radius              : 4px;
 $box-shadow                 : none;
 $global-transition          : none;
 $masthead-height            : 0;  // the masthead scrolls with the page, so nothing needs to clear it
-$navicon-width              : 20px;
+$navicon-width              : 18px;
 $navicon-height             : 3px;
 $sidebar-link-max-width     : 250px;
 $sidebar-screen-min-width   : 1024px;
 
-/* Old Web light theme for the site: teal desktop, white page, grey buttons */
+/* Walnut panelling: stretched noise for the grain, a groove and a sheen on every plank */
+$desktop-tile               : url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='600'><filter id='g' x='0' y='0'><feTurbulence type='fractalNoise' baseFrequency='0.22 0.004' numOctaves='3' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.08  0 0 0 0 0.03  1.5 0 0 0 -0.55'/></filter><linearGradient id='s'><stop offset='0' stop-opacity='.22'/><stop offset='.45' stop-color='%23fff' stop-opacity='.07'/><stop offset='1' stop-opacity='.18'/></linearGradient><rect width='180' height='600' filter='url(%23g)'/><rect width='180' height='600' fill='url(%23s)'/><rect width='3' height='600' fill-opacity='.55'/><rect x='3' width='1' height='600' fill='%23fff' fill-opacity='.1'/></svg>");
+
+/* Old Web light theme for the site: daytime, backlit dial */
 :root {
     --global-base-color                 : #{$primary-color};
-    --global-bg-color                   : #fff;
-    --global-footer-bg-color            : #{$light-gray};
-    --global-border-color               : #{$gray};
+    --global-bg-color                   : #f6e6b9;
+    --global-footer-bg-color            : transparent;
+    --global-border-color               : rgba(30, 27, 22, 0.25);
     --global-dark-border-color          : #{$dark-gray};
-    --global-code-background-color      : #ffffe1;
-    --global-code-text-color            : #000;
+    --global-code-background-color      : #f9eecd;
+    --global-code-text-color            : #{$darker-gray};
     --global-fig-caption-color          : #{$dark-gray};
-    --global-link-color                 : #0000ee;
-    --global-link-color-hover           : #ff0000;
-    --global-link-color-visited         : #551a8b;
-    --global-masthead-link-color        : #000;
-    --global-masthead-link-color-hover  : #000;
-    --global-text-color                 : #000;
+    --global-link-color                 : #1f4fa8;
+    --global-link-color-hover           : #c0281c;
+    --global-link-color-visited         : #6a2c91;
+    --global-masthead-link-color        : #f2efe6;
+    --global-masthead-link-color-hover  : #fff;
+    --global-text-color                 : #{$darker-gray};
     --global-text-color-light           : #{$dark-gray};
-    --global-thead-color                : #{$light-gray};
+    --global-thead-color                : #ead7a3;
 
-    /* Bevelled window chrome, as drawn by Windows 95 and Netscape */
-    --ow-face                           : #{$light-gray};
-    --ow-face-text                      : #000;
-    --ow-highlight                      : #fff;
-    --ow-light                          : #{$lighter-gray};
-    --ow-shadow                         : #{$gray};
-    --ow-dark-shadow                    : #000;
-    --ow-select-bg                      : #000080;
-    --ow-select-text                    : #fff;
-
-    --ow-desktop-color                  : #008080;
+    /* the room */
+    --ow-desktop-color                  : #6e4123;
     --ow-desktop                        : #{$desktop-tile};
-    --ow-bar-bg                         : #{$light-gray};
-    --ow-bar-text                       : #000;
-    --ow-panel-border                   : #{$light-gray};
-    --ow-heading                        : #000080;
-    --ow-heading-shadow                 : #{$light-gray};
-    --ow-marquee-bg                     : #000080;
-    --ow-marquee-text                   : #ffff00;
-    --ow-bullet                         : #ff0000;
+
+    /* cream plastic casing */
+    --ow-case                           : #efe4c6;
+    --ow-case-hi                        : #fffaf0;
+    --ow-case-lo                        : #cdbf98;
+    --ow-case-edge                      : #9c8e68;
+    --ow-case-print                     : #3b3427;
+    --ow-case-link                      : #1f4fa8;
+
+    /* black glass front panel and its printing */
+    --ow-glass                          : #0c0c0f;
+    --ow-print                          : #f2efe6;
+    --ow-print-dim                      : #9a968c;
+    --ow-print-blue                     : #5fa0ff;
+    --ow-print-red                      : #ff3b2f;
+    --ow-needle                         : #ff2a1a;
+
+    /* the content window: a warm backlit dial face */
+    --ow-face                           : radial-gradient(ellipse at 50% 30%, #fff8e2 0%, #f7e7b8 60%, #efd89a 100%);
+    --ow-face-sheen                     : rgba(255, 255, 255, 0.45);
+    --ow-face-shade                     : rgba(120, 80, 10, 0.25);
+    --ow-title                          : #{$darker-gray};
+    --ow-heading                        : #b3261e;
+    --ow-marker                         : #c0281c;
+
+    --ow-ticker-bg                      : #140a02;
+    --ow-ticker-text                    : #ffb43a;
+    --ow-select-bg                      : #1f4fa8;
+    --ow-select-text                    : #fff;
 }
