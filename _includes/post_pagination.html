@@ -1,13 +1,41 @@
 {% include base_path %}
 
-{% if page.previous or page.next %}
-  {% assign index_url = "/" | append: page.collection | append: "/" %}
-  {% assign index_link = site.data.navigation.main | where: "url", index_url | first %}
+{% comment %}
+  Portfolio and Research step through projects in the order their index pages list them
+  (Portfolio by `type:` heading, then `order:`); other collections use Jekyll's own order.
+{% endcomment %}
+{% assign prev_doc = page.previous %}
+{% assign next_doc = page.next %}
+{% if page.collection == "portfolio" or page.collection == "research" %}
+  {% assign docs = site[page.collection] | sort: "order" %}
+  {% if page.collection == "portfolio" and site.portfolio_type %}
+    {% assign ordered = "" | split: "" %}
+    {% for type in site.portfolio_type %}
+      {% assign group = docs | where: "type", type[0] %}
+      {% assign ordered = ordered | concat: group %}
+    {% endfor %}
+  {% else %}
+    {% assign ordered = docs %}
+  {% endif %}
+  {% assign prev_doc = nil %}
+  {% assign next_doc = nil %}
+  {% for doc in ordered %}
+    {% if doc.url == page.url %}
+      {% unless forloop.first %}{% assign prev_index = forloop.index0 | minus: 1 %}{% assign prev_doc = ordered[prev_index] %}{% endunless %}
+      {% unless forloop.last %}{% assign next_doc = ordered[forloop.index] %}{% endunless %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign index_url = "/" | append: page.collection | append: "/" %}
+{% assign index_link = site.data.navigation.main | where: "url", index_url | first %}
+
+{% if prev_doc or next_doc or index_link %}
   <nav class="pager" aria-label="{{ index_link.title | default: page.collection | capitalize }} pages">
     <div class="pager__prev">
-      {% if page.previous %}
+      {% if prev_doc %}
         <span class="pager__label">&laquo; {{ site.data.ui-text[site.locale].pagination_previous | default: "Previous" }}</span>
-        <a href="{{ base_path }}{{ page.previous.url }}" rel="prev">{{ page.previous.title | markdownify | strip_html | strip }}</a>
+        <a href="{{ base_path }}{{ prev_doc.url }}" rel="prev">{{ prev_doc.title | markdownify | strip_html | strip }}</a>
       {% endif %}
     </div>
     {% if index_link %}
@@ -17,9 +45,9 @@
       </div>
     {% endif %}
     <div class="pager__next">
-      {% if page.next %}
+      {% if next_doc %}
         <span class="pager__label">{{ site.data.ui-text[site.locale].pagination_next | default: "Next" }} &raquo;</span>
-        <a href="{{ base_path }}{{ page.next.url }}" rel="next">{{ page.next.title | markdownify | strip_html | strip }}</a>
+        <a href="{{ base_path }}{{ next_doc.url }}" rel="next">{{ next_doc.title | markdownify | strip_html | strip }}</a>
       {% endif %}
     </div>
   </nav>

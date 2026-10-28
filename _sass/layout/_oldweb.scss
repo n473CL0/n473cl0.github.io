@@ -357,17 +357,22 @@ hr {
   background: var(--ow-face-text);
 }
 
-/* scrolling welcome banner */
+/* scrolling welcome banner, with a pause button at the right-hand end */
 .masthead__marquee {
-  overflow: hidden;
-  padding: 0.25em 0;
+  position: relative;
   color: var(--ow-marquee-text);
   font-family: $ow-fun-font;
   font-size: $type-size-6;
   font-weight: bold;
-  white-space: nowrap;
   background: var(--ow-marquee-bg);
   border-top: 1px solid var(--ow-shadow);
+}
+
+.masthead__marquee-text {
+  overflow: hidden;
+  margin: 0 2.5em 0 0;
+  padding: 0.25em 0;
+  white-space: nowrap;
 
   span {
     display: inline-block;
@@ -375,11 +380,42 @@ hr {
     -webkit-animation: ow-marquee 30s linear infinite;
             animation: ow-marquee 30s linear infinite;
   }
+}
 
-  &:hover span {
-    -webkit-animation-play-state: paused;
-            animation-play-state: paused;
+.masthead__marquee:hover .masthead__marquee-text span {
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+
+.masthead__marquee-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.5em;
+  width: 26px;
+  height: 20px;
+  padding: 0;
+  font-size: 9px;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  @include ow-button;
+}
+
+/* paused, or for anyone who prefers less motion: the whole message, still and centred */
+@mixin ow-marquee-still {
+  margin-left: 2.5em;
+  text-align: center;
+  white-space: normal;
+
+  span {
+    padding-left: 0;
+    -webkit-animation: none;
+            animation: none;
   }
+}
+
+.masthead__marquee.is-paused .masthead__marquee-text {
+  @include ow-marquee-still;
 }
 
 @-webkit-keyframes ow-marquee {
@@ -393,15 +429,14 @@ hr {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .masthead__marquee {
-    text-align: center;
-    white-space: normal;
+  .masthead__marquee-text {
+    @include ow-marquee-still;
+    margin-right: 0;
+    margin-left: 0;
+  }
 
-    span {
-      padding-left: 0;
-      -webkit-animation: none;
-              animation: none;
-    }
+  .masthead__marquee-toggle {
+    display: none;
   }
 }
 
@@ -716,5 +751,67 @@ td {
     strong {
       font-size: 10px;
     }
+  }
+}
+
+/*
+   Print: black on white, with no desktop, frames or buttons (in either theme)
+   ========================================================================== */
+
+@media print {
+  :root,
+  html[data-theme="dark"] {
+    --global-bg-color                   : #fff;
+    --global-text-color                 : #000;
+    --global-text-color-light           : #333;
+    --global-link-color                 : #000;
+    --global-link-color-hover           : #000;
+    --global-link-color-visited         : #000;
+    --global-code-text-color            : #000;
+    --global-code-background-color      : transparent;
+    --ow-heading                        : #000;
+    --ow-heading-shadow                 : transparent;
+    --ow-bar-bg                         : transparent;
+    --ow-bar-text                       : #000;
+    --ow-panel-border                   : #999;
+    --ow-bullet                         : #000;
+  }
+
+  html {
+    background: none;
+  }
+
+  #main {
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    border: 0;
+  }
+
+  .sidebar {
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .author__avatar,
+  .author__urls-wrapper,
+  .page__share,
+  .pager {
+    display: none;
+  }
+
+  .page__title {
+    border-image: none;
+    border-bottom-color: #000;
+  }
+
+  .page__content > p:first-child > em:only-child {
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .page__content a,
+  .archive a {
+    text-decoration: none;
   }
 }

@@ -1,7 +1,5 @@
+{% include base_path %}
 <!-- start custom footer snippets -->
-
-<!-- Support for MathJax -->
-<script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
 
 <!-- Old Web 88x31 buttons -->
 <div class="page__footer-badges">
@@ -12,5 +10,41 @@
   {% endif %}
   <span class="button88 button88--browser"><small>Viewable with</small><strong>Any browser</strong></span>
 </div>
+
+<!-- Marquee pause button (remembered between pages), and Enter/Space for the theme switch.
+     Only block comments and explicit semicolons: compress_html can join these lines. -->
+<script>
+  (function () {
+    var marquee = document.querySelector(".masthead__marquee");
+    var pause = marquee && marquee.querySelector(".masthead__marquee-toggle");
+
+    function setPaused(paused) {
+      marquee.classList.toggle("is-paused", paused);
+      pause.setAttribute("aria-pressed", paused ? "true" : "false");
+      pause.querySelector("i").className = paused ? "fa-solid fa-play" : "fa-solid fa-pause";
+      pause.title = paused ? "Play the scrolling banner" : "Pause the scrolling banner";
+    }
+
+    if (pause) {
+      try { setPaused(localStorage.getItem("marquee") === "paused"); } catch (e) {}
+      pause.addEventListener("click", function () {
+        var paused = !marquee.classList.contains("is-paused");
+        setPaused(paused);
+        try { localStorage.setItem("marquee", paused ? "paused" : "playing"); } catch (e) {}
+      });
+    }
+
+    /* the theme switch is a link (the nav script claims every <button> in #site-nav), so give it button keys */
+    var themeSwitch = document.querySelector("#theme-toggle a");
+    if (themeSwitch) {
+      themeSwitch.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          themeSwitch.click();
+        }
+      });
+    }
+  })();
+</script>
 
 <!-- end custom footer snippets -->
