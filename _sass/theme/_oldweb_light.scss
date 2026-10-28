@@ -12,7 +12,6 @@ $header-font-family         : $sans-serif;
 $caption-font-family        : $serif;
 
 $ow-ui-font                 : Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-$ow-wordart-font            : Impact, Haettenschweiler, "Arial Black", sans-serif;
 $ow-fun-font                : "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
 $ow-rainbow                 : linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00c000, #0080ff, #8000ff, #ff00ff);
 
@@ -77,6 +76,8 @@ $sidebar-screen-min-width   : 1024px;
     --ow-desktop                        : #{$desktop-tile};
     --ow-bar-bg                         : #{$light-gray};
     --ow-bar-text                       : #000;
+    --ow-title                          : #000080;
+    --ow-title-shadow                   : #fff;
     --ow-panel-border                   : #{$light-gray};
     --ow-heading                        : #000080;
     --ow-heading-shadow                 : #{$light-gray};
