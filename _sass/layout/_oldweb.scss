@@ -1,33 +1,20 @@
 /* ==========================================================================
    OLD WEB SKIN
-   The site as a mid-90s homepage built to look like a space-age receiver:
-   a cream plastic pod with a chrome-rimmed black glass front, a tuning-scale
-   menu, a knurled day/night knob, a ticker display and an 8-track deck.
+   A mid-90s homepage with space-age analogue touches: black glass bars with
+   chrome trim, a tuning-scale menu, a day/night knob, a ticker display and
+   a chrome-rimmed page on a tiled background.
    Colours come from theme/_oldweb_light.scss and theme/_oldweb_dark.scss.
    ========================================================================== */
 
 $ow-page-width              : 1100px;
-$ow-case-radius             : 36px;
 
 /* the menu links, as opposed to the site title and the day/night knob */
 $ow-station                 : ".masthead__menu-item:not(.masthead__menu-item--lg):not(.tail)";
 
-/* cream plastic, shaded side to side only, so stacked parts of the casing join without a seam;
-   the shadow falls sideways, and only the base (see .page__footer) casts one downwards */
-@mixin ow-case {
-  color: var(--ow-case-print);
-  background: linear-gradient(90deg, var(--ow-case-lo) 0%, var(--ow-case) 10%, var(--ow-case-hi) 45%, var(--ow-case) 82%, var(--ow-case-lo) 100%);
-  box-shadow: 0 0 0 1px var(--ow-case-edge), -16px 0 30px -14px rgba(0, 0, 0, 0.6), 16px 0 30px -14px rgba(0, 0, 0, 0.6);
-}
-
-/* black glass with a chrome rim and a sheen across the top */
-@mixin ow-glass($rim: 4px) {
+/* black glass with a soft sheen across the top */
+@mixin ow-glass-bar {
   color: var(--ow-print);
-  border: $rim solid transparent;
-  background: linear-gradient(172deg, rgba(255, 255, 255, 0.14) 0, rgba(255, 255, 255, 0) 140px) padding-box,
-              linear-gradient(var(--ow-glass), var(--ow-glass)) padding-box,
-              $ow-chrome border-box;
-  box-shadow: 0 0 0 1px #1a1a1a, inset 0 0 18px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0) 55%), var(--ow-glass);
 }
 
 /* the printed tick marks of a dial scale, along the bottom edge */
@@ -40,23 +27,8 @@ $ow-station                 : ".masthead__menu-item:not(.masthead__menu-item--lg
   background-repeat: no-repeat;
 }
 
-@mixin ow-device-width {
-  margin-left: 0.5em;
-  margin-right: 0.5em;
-
-  @include breakpoint($large) {
-    max-width: $large;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  @include breakpoint($x-large) {
-    max-width: $ow-page-width;
-  }
-}
-
 /*
-   The room
+   Page
    ========================================================================== */
 
 /* on html rather than body, so it also fills the space _main.js reserves for the footer */
@@ -94,7 +66,7 @@ button:focus {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px dashed var(--ow-print-red);
+  outline: 2px dashed var(--ow-needle);
   outline-offset: 3px;
 }
 
@@ -110,77 +82,117 @@ button:focus-visible {
   background: linear-gradient(90deg, #8a8a8a, #f2f2f2 45%, #9a9a9a);
 }
 
-/*
-   Top of the casing: the tuning panel
-   ========================================================================== */
-
-.masthead {
-  position: relative;
+/* the page sits in a chrome-rimmed panel on the tiled background */
+#main {
   margin-top: 1.5em;
-  padding: 0.6em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  padding: 1.25em 1em 1.5em;
   -webkit-animation: none;
           animation: none;
-  border-radius: $ow-case-radius $ow-case-radius 0 0;
-  @include ow-device-width;
-  @include ow-case;
+  border: 4px solid transparent;
+  border-radius: 18px;
+  background: var(--ow-panel) padding-box, $ow-chrome border-box;
+  box-shadow: 0 0 0 1px #1a1a1a, 0 12px 30px rgba(0, 0, 0, 0.5);
 
-  @include breakpoint($medium) {
-    padding: 1.25em 1.25em 0.75em;
+  @include breakpoint($large) {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.75em 1.5em 2em;
   }
 
-  &::after {
-    display: none;
-  }
-
-  &__inner-wrap {
-    max-width: none;
-    padding: 0.6em 0.9em 0.8em;
-    border-radius: 26px;
-    @include ow-glass;
-
-    @include breakpoint($medium) {
-      padding: 0.75em 1.5em 1em;
-    }
-
-    @include breakpoint($x-large) {
-      max-width: none;
-    }
+  @include breakpoint($x-large) {
+    max-width: $ow-page-width;
   }
 }
 
-.masthead__label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.4em;
-  color: var(--ow-print-dim);
+.page__hero,
+.page__hero--overlay {
+  -webkit-animation: none;
+          animation: none;
+}
+
+.page__title {
+  color: var(--ow-title);
   font-family: $ow-space-font;
-  font-size: 0.5em;
-  letter-spacing: 0.2em;
+  font-size: $type-size-3;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
   text-transform: uppercase;
-
-  span:first-child {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
 }
 
-.masthead__lamp {
-  margin-left: 1em;
-  white-space: nowrap;
+/* section headings sit on a printed tick scale */
+.archive h1:not(.page__title),
+.archive h2:not(.archive__item-title),
+.page__content h2 {
+  margin-top: 1.75em;
+  padding-bottom: 0.9em;
+  color: var(--ow-heading);
+  font-family: $ow-space-font;
+  font-size: 0.85em;
+  font-weight: normal;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-bottom: 0;
+  @include ow-ticks(var(--ow-heading));
+}
+
+.archive h2 + hr {
+  display: none;
+}
+
+.page__content h3 {
+  color: var(--ow-heading);
+}
+
+hr {
+  height: 10px;
+  margin: 1em 0 1.5em;
+  border: 0;
+  @include ow-ticks(var(--global-text-color-light));
+}
+
+/* every project gets an indicator lamp */
+.archive__item-title {
+  font-size: 1.15em;
 
   &::before {
     content: "";
     display: inline-block;
-    width: 1em;
-    height: 1em;
-    margin-right: 0.6em;
-    vertical-align: -0.2em;
+    width: 0.5em;
+    height: 0.5em;
+    margin-right: 0.55em;
+    vertical-align: 0.12em;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #ffc2ba, #ff2a1a 45%, #6e0802);
-    box-shadow: 0 0 8px #ff2a1a;
+    background: radial-gradient(circle at 35% 35%, #ffd0c8, var(--ow-marker) 50%, #5a0a04);
+    box-shadow: 0 0 5px var(--ow-marker);
+  }
+}
+
+/*
+   Masthead: a black glass bar with a tuning-scale menu
+   ========================================================================== */
+
+.masthead {
+  position: relative;
+  padding-bottom: 3px;
+  -webkit-animation: none;
+          animation: none;
+  @include ow-glass-bar;
+
+  /* chrome trim along the bottom */
+  &::after {
+    height: 3px;
+    background: $ow-chrome;
+  }
+
+  &__inner-wrap {
+    padding: 0.75em 1em 0.9em;
+
+    @include breakpoint($x-large) {
+      max-width: $ow-page-width;
+    }
   }
 }
 
@@ -195,16 +207,29 @@ button:focus-visible {
     display: none;
   }
 
-  /* the site title is the brand badge */
+  /* the site title, in chrome lettering */
   .masthead__menu-item--lg a,
   .masthead__menu-item--lg a:visited,
   .masthead__menu-item--lg a:hover,
   .masthead__menu-item--lg.selected a {
     margin: 0 1.5rem 0 0;
     padding: 0.2rem 0;
-    color: var(--ow-print);
+    color: #ddd;
+    font-family: $ow-space-font;
+    font-size: 0.85em;
     font-weight: normal;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: $ow-chrome;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
     border-bottom: 0;
+    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.9));
+
+    @include breakpoint($medium) {
+      font-size: 1.1em;
+    }
   }
 
   /* menu links are stations on a tuning scale, with a red needle on the current page */
@@ -228,8 +253,8 @@ button:focus-visible {
       position: absolute;
       bottom: -0.3rem;
       left: 50%;
-      height: 1.4rem;
       width: 2px;
+      height: 1.4rem;
       margin-left: -1px;
       background: var(--ow-needle);
       box-shadow: 0 0 6px var(--ow-needle);
@@ -255,8 +280,10 @@ button:focus-visible {
   .hidden-links {
     margin-top: 10px;
     padding: 0.5rem 0;
+    border: 3px solid transparent;
     border-radius: 14px;
-    @include ow-glass(3px);
+    background: linear-gradient(var(--ow-glass), var(--ow-glass)) padding-box, $ow-chrome border-box;
+    box-shadow: 0 0 0 1px #1a1a1a, 0 8px 20px rgba(0, 0, 0, 0.6);
 
     &:before,
     &:after {
@@ -310,34 +337,6 @@ button:focus-visible {
 .navicon:before,
 .navicon:after {
   background: #1e1b16;
-}
-
-.masthead__brand {
-  display: block;
-  color: #ddd;
-  font-family: $ow-space-font;
-  font-size: 0.85em;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: $ow-chrome;
-  -webkit-background-clip: text;
-          background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.9));
-
-  @include breakpoint($medium) {
-    font-size: 1.1em;
-  }
-}
-
-.masthead__model {
-  display: block;
-  margin-top: 0.4em;
-  color: var(--ow-print-blue);
-  font-family: $ow-space-font;
-  font-size: 0.45em;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
 }
 
 /* the day/night switch is a knurled chrome knob */
@@ -401,57 +400,9 @@ html[data-theme="dark"] .greedy-nav .visible-links #theme-toggle a {
   transform: rotate(45deg);
 }
 
-/* a printed multi-band scale, with machine-learning bands in place of AM/SW/FM */
-.masthead__bands {
-  display: none;
-  margin-top: 0.6em;
-  color: var(--ow-print);
-  font-family: $ow-space-font;
-  font-size: 0.45em;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-
-  @include breakpoint($medium) {
-    display: block;
-  }
-}
-
-.masthead__band {
-  display: flex;
-  align-items: flex-end;
-  padding: 0.5em 0 1.1em;
-  @include ow-ticks(rgba(242, 239, 230, 0.35));
-
-  span {
-    flex: 1;
-    text-align: center;
-  }
-
-  &:nth-child(2) span {
-    color: var(--ow-print-red);
-  }
-
-  .masthead__band-name {
-    flex: 0 0 7em;
-    color: var(--ow-print);
-    text-align: left;
-  }
-
-  .masthead__band-unit {
-    flex: 0 0 3em;
-    color: var(--ow-print-blue);
-    font-family: $serif;
-    font-size: 1.6em;
-    font-style: italic;
-    text-align: right;
-    text-transform: none;
-  }
-}
-
-/* scrolling ticker on an amber dot-matrix display */
+/* scrolling welcome banner on an amber dot-matrix display */
 .masthead__marquee {
   position: relative;
-  margin-top: 0.75em;
   padding: 0.15em 0 0.05em;
   overflow: hidden;
   color: var(--ow-ticker-text);
@@ -461,8 +412,7 @@ html[data-theme="dark"] .greedy-nav .visible-links #theme-toggle a {
   text-transform: uppercase;
   white-space: nowrap;
   background: var(--ow-ticker-bg);
-  border-radius: 6px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
   text-shadow: 0 0 6px var(--ow-ticker-text);
 
   &::after {
@@ -518,110 +468,11 @@ html[data-theme="dark"] .greedy-nav .visible-links #theme-toggle a {
 }
 
 /*
-   Middle of the casing: speaker pod and dial window
+   Sidebar
    ========================================================================== */
 
-#main {
-  margin-top: 0;
-  padding: 1em 0.75em 1.25em;
-  -webkit-animation: none;
-          animation: none;
-  @include ow-device-width;
-  @include ow-case;
-
-  @include breakpoint($medium) {
-    padding: 1.25em 1.25em 1.5em;
-  }
-}
-
-.page__hero,
-.page__hero--overlay {
-  -webkit-animation: none;
-          animation: none;
-}
-
-/* the content sits behind a chrome-rimmed dial window */
-.page,
-.archive {
-  position: relative;
-  display: flow-root;  // contains the floated .page__inner-wrap on narrow screens
-  padding: 1.25em 1.1em 1.75em;
-  color: var(--global-text-color);
-  border: 5px solid transparent;
-  border-radius: 26px;
-  background: linear-gradient(172deg, var(--ow-face-sheen) 0, rgba(255, 255, 255, 0) 260px) padding-box,
-              var(--ow-face) padding-box,
-              $ow-chrome border-box;
-  box-shadow: inset 0 0 30px var(--ow-face-shade), 0 0 0 1px #1a1a1a, 0 4px 10px rgba(0, 0, 0, 0.35);
-
-  @include breakpoint($large) {
-    padding: 1.75em 2.25em 2.25em;
-  }
-}
-
-.page__title {
-  color: var(--ow-title);
-  font-family: $ow-space-font;
-  font-size: $type-size-3;
-  font-weight: normal;
-  letter-spacing: 0.06em;
-  line-height: 1.3;
-  text-transform: uppercase;
-}
-
-/* section headings are printed band names over a tick scale */
-.archive h1:not(.page__title),
-.archive h2:not(.archive__item-title),
-.page__content h2 {
-  margin-top: 1.75em;
-  padding-bottom: 0.9em;
-  color: var(--ow-heading);
-  font-family: $ow-space-font;
-  font-size: 0.85em;
-  font-weight: normal;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  border-bottom: 0;
-  @include ow-ticks(var(--ow-heading));
-}
-
-.archive h2 + hr {
-  display: none;
-}
-
-.page__content h3 {
-  color: var(--ow-heading);
-}
-
-hr {
-  height: 10px;
-  margin: 1em 0 1.5em;
-  border: 0;
-  @include ow-ticks(var(--global-text-color-light));
-}
-
-/* every project gets an indicator lamp */
-.archive__item-title {
-  font-size: 1.15em;
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 0.5em;
-    height: 0.5em;
-    margin-right: 0.55em;
-    vertical-align: 0.12em;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #ffd0c8, var(--ow-marker) 50%, #5a0a04);
-    box-shadow: 0 0 5px var(--ow-marker);
-  }
-}
-
-/* the sidebar is the speaker pod on the side of the casing */
 .sidebar {
-  color: var(--ow-case-print);
-
-  /* sits in the casing, and sticks while the content scrolls past */
+  /* sits in the panel, and sticks while the content scrolls past */
   @media screen and (min-width: $sidebar-screen-min-width) {
     position: -webkit-sticky;
     position: sticky;
@@ -631,24 +482,19 @@ hr {
   }
 
   @include breakpoint($large) {
-    padding: 1.25em 1em;
-    padding-top: 1.25em !important;  // overrides the masthead offset set by greedy-navigation.js
-    border-radius: 28px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.3));
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.7);
+    padding-top: 0 !important;  // overrides the masthead offset set by greedy-navigation.js
   }
 }
 
-/* the photo is the speaker cone, in a grille behind a chrome ring */
+/* the photo sits in a chrome ring */
 .author__avatar img {
   border-radius: 50%;
-  box-shadow: 0 0 0 2px #bdbdbd, 0 0 0 3px #555;
+  box-shadow: 0 0 0 2px #d6d6d6, 0 0 0 3px #555;
 
   @include breakpoint($large) {
-    padding: 12px;
+    padding: 0;
     border: 0;
-    background: repeating-radial-gradient(circle, #2a2a2a 0, #2a2a2a 2px, #121212 2px, #121212 4px);
-    box-shadow: 0 0 0 3px #e2e2e2, 0 0 0 5px #6f6f6f, 0 6px 12px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 0 0 4px #e2e2e2, 0 0 0 5px #6f6f6f, 0 6px 12px rgba(0, 0, 0, 0.35);
   }
 }
 
@@ -661,26 +507,23 @@ hr {
   text-transform: uppercase;
 
   @include breakpoint($large) {
+    margin-top: 1.25em;
     font-size: 0.6em;
   }
 }
 
-/* the mobile Follow drop-down; on wide screens the list sits straight on the pod */
 .author__urls {
-  background: var(--ow-case);
-
-  @include breakpoint($large) {
-    background: transparent;
-  }
-
   &:after {
-    border-color: var(--ow-case) transparent;
+    border-color: var(--global-bg-color) transparent;
   }
 
-  a,
-  a:visited {
-    color: var(--ow-case-link);
+  a {
+    color: var(--global-link-color);
     text-decoration: underline;
+  }
+
+  a:visited {
+    color: var(--global-link-color-visited);
   }
 
   a:hover {
@@ -707,59 +550,46 @@ hr {
 }
 
 /*
-   Base of the casing: 8-track deck and pedestal
+   Footer: a black glass bar to match the masthead
    ========================================================================== */
 
 .page__footer {
   position: relative;
   bottom: auto;
-  margin-top: 0;
+  margin-top: 2em;
   -webkit-animation: none;
           animation: none;
-  color: var(--ow-case-print);
-  background: transparent;
+  color: var(--ow-print-dim);
   border-top: 0;
+  @include ow-glass-bar;
+
+  /* chrome trim along the top */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: $ow-chrome;
+  }
 
   footer {
-    position: relative;
-    margin-top: 0;
-    padding: 1em 0.75em 1.5em;
-    border-radius: 0 0 $ow-case-radius $ow-case-radius;
-    @include ow-device-width;
-    @include ow-case;
-    box-shadow: 0 0 0 1px var(--ow-case-edge), -16px 0 30px -14px rgba(0, 0, 0, 0.6), 16px 0 30px -14px rgba(0, 0, 0, 0.6),
-                inset 0 -18px 24px -12px rgba(0, 0, 0, 0.25), 0 16px 30px rgba(0, 0, 0, 0.5);
+    padding-top: 0.75em;
 
-    @include breakpoint($medium) {
-      padding: 1.25em 1.5em 1.75em;
-    }
-
-    /* the round foot the receiver stands on */
-    &::before {
-      content: "";
-      position: absolute;
-      left: 33%;
-      bottom: -30px;
-      z-index: -1;
-      width: 34%;
-      height: 34px;
-      border-radius: 0 0 50% 50% / 0 0 100% 100%;
-      background: linear-gradient(90deg, var(--ow-case-lo), var(--ow-case-hi) 45%, var(--ow-case-lo));
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    @include breakpoint($x-large) {
+      max-width: $ow-page-width;
     }
   }
 
-  a {
-    color: var(--ow-case-link);
+  a,
+  a:visited {
+    color: var(--ow-print-link);
     text-decoration: underline;
+  }
 
-    &:visited {
-      color: var(--ow-case-link);
-    }
-
-    &:hover {
-      color: var(--global-link-color-hover);
-    }
+  a:hover {
+    color: #fff;
   }
 
   .fas,
@@ -767,71 +597,6 @@ hr {
   .far,
   .fal {
     color: inherit;
-  }
-}
-
-.page__footer-deck {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.25em;
-  padding: 1.1em 1.25em 0.8em;
-  border-radius: 18px;
-  @include ow-glass(3px);
-}
-
-.page__footer-slot {
-  position: relative;
-  flex: 1;
-  max-width: 24em;
-  height: 2.2em;
-  border-radius: 4px;
-  background: #050505;
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.12);
-}
-
-/* a cartridge half pushed into the slot */
-.page__footer-cartridge {
-  position: absolute;
-  top: -0.7em;
-  right: 1em;
-  bottom: 0.5em;
-  left: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: #f2efe6;
-  font-family: $ow-space-font;
-  font-size: 0.5em;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(#1a1a1a, #1a1a1a) center / calc(100% - 2.5em) 60% no-repeat,
-              linear-gradient(#f6e6e3, #d6bcb8);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 2px 4px rgba(0, 0, 0, 0.6);
-}
-
-.page__footer-program {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: auto;
-  padding-left: 1.5em;
-  color: var(--ow-print-dim);
-  font-family: $ow-space-font;
-  font-size: 0.45em;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-
-  &::before {
-    content: "";
-    width: 26px;
-    height: 26px;
-    margin-bottom: 0.8em;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #fff, #d0d0d0 45%, #8a8a8a 100%);
-    box-shadow: 0 0 0 2px #1a1a1a, 0 3px 5px rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -894,14 +659,5 @@ hr {
   &--feed:hover {
     color: #fff;
     background: linear-gradient(#ff8c1a, #e65c00);
-  }
-
-  &--browser {
-    color: #000;
-    background: #fff;
-
-    strong {
-      font-size: 10px;
-    }
   }
 }

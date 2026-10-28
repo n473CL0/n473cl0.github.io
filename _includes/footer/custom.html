@@ -3,12 +3,6 @@
 <!-- Support for MathJax -->
 <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"></script>
 
-<!-- 8-track deck at the base of the receiver -->
-<div class="page__footer-deck" aria-hidden="true">
-  <div class="page__footer-slot"><span class="page__footer-cartridge">8-track &#9656; {{ site.name }} &#9656; Side A</span></div>
-  <span class="page__footer-program">Program</span>
-</div>
-
 <!-- Old Web 88x31 buttons -->
 <div class="page__footer-badges">
   <a class="button88 button88--jekyll" href="https://jekyllrb.com" rel="nofollow"><small>Powered by</small><strong>Jekyll</strong></a>
@@ -16,7 +10,6 @@
   {% if site.atom_feed.hide != true %}
   <a class="button88 button88--feed" href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ base_path }}/feed.xml{% endif %}"><small>Atom feed</small><strong>XML</strong></a>
   {% endif %}
-  <span class="button88 button88--browser"><small>Viewable with</small><strong>Any browser</strong></span>
 </div>
 
 <!-- end custom footer snippets -->
