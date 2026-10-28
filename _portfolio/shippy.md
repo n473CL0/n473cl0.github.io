@@ -2,8 +2,8 @@
 title: "ShipPy"
 excerpt: "A Python library for the financial impact of biofouling on ships · Python, pytest"
 collection: portfolio
-type: libraries
-order: 2
+order: 8
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Personal project · Mar 2026 – Jun 2026 · Python, pytest · [Code on GitHub](https://github.com/n473CL0/shippy)*

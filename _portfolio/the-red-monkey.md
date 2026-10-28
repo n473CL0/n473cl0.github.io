@@ -2,8 +2,8 @@
 title: "The Red Monkey: Pub Website"
 excerpt: "Website for a local pub in Redland, Bristol · Jekyll, GitHub Pages"
 collection: portfolio
-type: websites
-order: 1
+order: 5
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Client website · May 2026 · Jekyll, Sass, GitHub Pages · [theredmonkey.co.uk](https://theredmonkey.co.uk) · [Code on GitHub](https://github.com/n473CL0/the-red-monkey)*

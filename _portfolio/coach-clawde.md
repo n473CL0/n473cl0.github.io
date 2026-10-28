@@ -2,8 +2,8 @@
 title: "Coach Clawde"
 excerpt: "A workout-tracking PWA that uses Claude as a strength and conditioning coach · React, TypeScript, Supabase"
 collection: portfolio
-type: apps
 order: 2
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Personal project · Jun 2026 – present · React 19, TypeScript, Vite, Tailwind CSS, Zustand, Supabase, Vitest, Vercel · [Website](https://n473cl0.github.io/coachclawde/) · [Code on GitHub](https://github.com/n473CL0/coachclawde)*

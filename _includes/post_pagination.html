@@ -2,21 +2,12 @@
 
 {% comment %}
   Portfolio and Research step through projects in the order their index pages list them
-  (Portfolio by `type:` heading, then `order:`); other collections use Jekyll's own order.
+  (by `order:`); other collections use Jekyll's own order.
 {% endcomment %}
 {% assign prev_doc = page.previous %}
 {% assign next_doc = page.next %}
 {% if page.collection == "portfolio" or page.collection == "research" %}
-  {% assign docs = site[page.collection] | sort: "order" %}
-  {% if page.collection == "portfolio" and site.portfolio_type %}
-    {% assign ordered = "" | split: "" %}
-    {% for type in site.portfolio_type %}
-      {% assign group = docs | where: "type", type[0] %}
-      {% assign ordered = ordered | concat: group %}
-    {% endfor %}
-  {% else %}
-    {% assign ordered = docs %}
-  {% endif %}
+  {% assign ordered = site[page.collection] | sort: "order" %}
   {% assign prev_doc = nil %}
   {% assign next_doc = nil %}
   {% for doc in ordered %}

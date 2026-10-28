@@ -3,6 +3,7 @@ title: "Ofcom Online Wellbeing Survey Dashboard"
 excerpt: "180 Degrees Consulting data science case competition · Python, Streamlit, Altair"
 collection: research
 order: 3
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *180 Degrees Consulting data science case competition · Jan 2026 · Python, pandas, Streamlit, Altair*

@@ -3,6 +3,7 @@ title: "Topic–Sentiment Analysis of Hotel Reviews"
 excerpt: "Topic modelling and sentiment analysis of 515,738 Booking.com reviews · Python, BERTopic, RoBERTa, Streamlit"
 collection: research
 order: 1
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *University of Bristol, Mathematical and Data Modelling 2 (group of five) · 2026 · Python, BERTopic, multilingual RoBERTa, Streamlit · [Code on GitHub](https://github.com/n473CL0/MDM2-ReviewsProj)*

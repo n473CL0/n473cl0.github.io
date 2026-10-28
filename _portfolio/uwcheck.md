@@ -2,8 +2,8 @@
 title: "UWCheck"
 excerpt: "One calendar and to-do list for every UW deadline: Canvas, Ed and CSE course websites · Node.js, npm"
 collection: portfolio
-type: apps
 order: 3
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Personal project · Oct 2026 – present · Node.js, HTML/CSS/JavaScript, GitHub Actions, npm · [n473cl0.github.io/uwcheck](https://n473cl0.github.io/uwcheck/) · [Code on GitHub](https://github.com/n473CL0/uwcheck)*

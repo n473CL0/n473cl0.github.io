@@ -9,7 +9,9 @@ author_profile: true
 
 
 {% assign projects = site.research | sort: "order" %}
+{% if projects.size == 0 %}
+  {% include under-construction.html %}
+{% endif %}
 {% for post in projects %}
   {% include archive-single.html %}
 {% endfor %}
-

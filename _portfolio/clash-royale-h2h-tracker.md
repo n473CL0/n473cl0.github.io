@@ -2,8 +2,8 @@
 title: "Clash Royale Head-to-Head Tracker"
 excerpt: "Tracking head-to-head records between friends from the Supercell API · React, FastAPI, PostgreSQL, Docker"
 collection: portfolio
-type: apps
 order: 4
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Personal project · Jan 2026 – Feb 2026 · React, Tailwind CSS, Python (FastAPI, SQLAlchemy), PostgreSQL, Docker Compose, nginx*

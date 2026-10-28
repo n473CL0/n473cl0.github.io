@@ -2,8 +2,8 @@
 title: "Kate Daudy: Artist Website"
 excerpt: "Classifying an artist's whole body of work, and an easy way for her to upload new pieces · Framer, WordPress, JavaScript"
 collection: portfolio
-type: websites
-order: 2
+order: 6
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Client website · Jul 2025 – Nov 2025 · Framer, WordPress (custom post types, Advanced Custom Fields, WP All Import), JavaScript, REST API · [katedaudy.com](https://katedaudy.com)*

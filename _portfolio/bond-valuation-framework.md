@@ -2,8 +2,8 @@
 title: "Bond Valuation Framework"
 excerpt: "Modelling bond cash flows under different inflation and interest-rate models · Python"
 collection: portfolio
-type: libraries
-order: 1
+order: 7
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Personal project · Mar 2025 – Apr 2025 · Python, pandas, Matplotlib*

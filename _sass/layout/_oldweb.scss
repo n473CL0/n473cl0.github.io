@@ -159,8 +159,9 @@ hr {
       color: var(--ow-heading);
     }
 
+    /* sub-bullets close to their item, with a gap before the next item (CV entries) */
     ul {
-      margin-top: 0.4em;
+      margin: 0.4em 0 0.8em;
       list-style-type: circle;
     }
   }
@@ -524,6 +525,31 @@ hr {
   margin: 0;
   color: var(--global-text-color-light);
   font-size: 0.95em;
+}
+
+/* shown on Portfolio / Research while every project is a draft */
+.under-construction {
+  margin: 1em 0 1.5em;
+  padding: 1em 1.25em;
+  border: 10px solid #ffcc00;
+  border-image: repeating-linear-gradient(-45deg, #000 0, #000 10px, #ffcc00 10px, #ffcc00 20px) 10;
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 0.5em;
+  }
+
+  &__sign {
+    color: var(--ow-heading);
+    font-family: $sans-serif;
+    font-size: $type-size-4;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 }
 
 /* previous / back to index / next, under each project */

@@ -2,8 +2,8 @@
 title: "Focus Together"
 excerpt: "A calm, sound-first study game for friends · Expo, React Native Web, TypeScript, Supabase"
 collection: portfolio
-type: apps
 order: 1
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *Personal project · Sep 2026 – present · Expo (React Native Web), TypeScript, Supabase (Postgres, Auth, Realtime), Playwright, GitHub Actions, EAS Hosting · [focustogether.expo.app](https://focustogether.expo.app)*

@@ -9,17 +9,9 @@ author_profile: true
 
 
 {% assign projects = site.portfolio | sort: "order" %}
-{% for type in site.portfolio_type %}
-  {% assign title_shown = false %}
-  {% for post in projects %}
-    {% if post.type != type[0] %}
-      {% continue %}
-    {% endif %}
-    {% unless title_shown %}
-      <h2>{{ type[1].title }}</h2><hr />
-      {% assign title_shown = true %}
-    {% endunless %}
-    {% include archive-single.html %}
-  {% endfor %}
+{% if projects.size == 0 %}
+  {% include under-construction.html %}
+{% endif %}
+{% for post in projects %}
+  {% include archive-single.html %}
 {% endfor %}
-

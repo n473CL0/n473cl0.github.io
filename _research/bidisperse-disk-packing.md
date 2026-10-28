@@ -3,6 +3,7 @@ title: "Bidisperse Disk Packing Simulation"
 excerpt: "Minimising wasted material when pressing disks of two sizes from a sheet · Python"
 collection: research
 order: 2
+published: false  # AI-written draft: rewrite the excerpt and text in your own words, then delete this line
 ---
 
 *University of Bristol, Mathematical and Data Modelling (Year 1) · Jan 2025 – Mar 2025 · Python, pandas, Matplotlib*

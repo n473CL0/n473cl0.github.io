@@ -91,15 +91,6 @@ publication_category:
   conferences:
     title: 'Conference Papers'
 
-# Portfolio Types - The headings on the Portfolio page, in order. Each project's `type:` picks its heading
-portfolio_type:
-  apps:
-    title: 'Apps'
-  websites:
-    title: 'Websites'
-  libraries:
-    title: 'Libraries'
-
 # Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews
 breadcrumbs              : false # true, false (default)
