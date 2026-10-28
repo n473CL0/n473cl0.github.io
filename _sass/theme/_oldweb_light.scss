@@ -1,87 +1,86 @@
 /* ==========================================================================
     OLD WEB THEME - LIGHT VERSION
-    Daytime: walnut panelling, black glass bars, a cream page
     ========================================================================== */
 
-/* Typefaces: a plain sans for reading, Michroma for the space-age lettering */
-$serif                      : Georgia, Times, serif;
-$sans-serif                 : "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* Typefaces of a late-90s homepage: default serif body, Arial headings */
+$serif                      : "Times New Roman", Times, serif;
+$sans-serif                 : Arial, Helvetica, sans-serif;
 $sans-serif-narrow          : $sans-serif;
 $monospace                  : "Courier New", Courier, monospace;
-$global-font-family         : $sans-serif;
+$global-font-family         : $serif;
 $header-font-family         : $sans-serif;
-$caption-font-family        : $sans-serif;
+$caption-font-family        : $serif;
 
-$ow-space-font              : "Michroma", "Eurostile", "Microgramma", "Arial Black", sans-serif;
-$ow-led-font                : "VT323", "Courier New", monospace;
-$ow-chrome                  : linear-gradient(180deg, #fff 0%, #c8c8c8 22%, #f6f6f6 45%, #858585 70%, #e4e4e4 100%);
+$ow-ui-font                 : Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+$ow-wordart-font            : Impact, Haettenschweiler, "Arial Black", sans-serif;
+$ow-fun-font                : "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", cursive;
+$ow-rainbow                 : linear-gradient(90deg, #ff0000, #ff8000, #ffff00, #00c000, #0080ff, #8000ff, #ff00ff);
 
 /* Color codes used for the theme */
-$primary-color              : #1f4fa8;
-$gray                       : #8a8170;
-$dark-gray                  : #5a5244;
-$darker-gray                : #1e1b16;
-$light-gray                 : #cbbd96;
-$lighter-gray               : #efe4c6;
+$primary-color              : #000080;
+$gray                       : #808080;
+$dark-gray                  : #404040;
+$darker-gray                : #000;
+$light-gray                 : #c0c0c0;
+$lighter-gray               : #dfdfdf;
+
+/* Tiled desktop: a dithered diamond pattern */
+$desktop-tile               : url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M12 5l7 7-7 7-7-7z' fill='%23007676'/><path d='M0 0h2v2H0z' fill='%2300a0a0'/></svg>");
 
 /* Color codes used for the site */
-$danger-color               : #c0281c;
-$info-color                 : #1f4fa8;
-$notice-color               : #8a8170;
-$success-color              : #3a7d2c;
-$warning-color              : #d98a1c;
+$danger-color               : #ff0000;
+$info-color                 : #000080;
+$notice-color               : #808080;
+$success-color              : #008000;
+$warning-color              : #ff8000;
 
 /* Other basic settings for the template */
-$border-radius              : 4px;
+$border-radius              : 0;
 $box-shadow                 : none;
 $global-transition          : none;
 $masthead-height            : 0;  // the masthead scrolls with the page, so nothing needs to clear it
-$navicon-width              : 18px;
+$navicon-width              : 20px;
 $navicon-height             : 3px;
 $sidebar-link-max-width     : 250px;
 $sidebar-screen-min-width   : 1024px;
 
-/* Walnut panelling: stretched noise for the grain, a groove and a sheen on every plank */
-$desktop-tile               : url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='600'><filter id='g' x='0' y='0'><feTurbulence type='fractalNoise' baseFrequency='0.22 0.004' numOctaves='3' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.08  0 0 0 0 0.03  1.5 0 0 0 -0.55'/></filter><linearGradient id='s'><stop offset='0' stop-opacity='.22'/><stop offset='.45' stop-color='%23fff' stop-opacity='.07'/><stop offset='1' stop-opacity='.18'/></linearGradient><rect width='180' height='600' filter='url(%23g)'/><rect width='180' height='600' fill='url(%23s)'/><rect width='3' height='600' fill-opacity='.55'/><rect x='3' width='1' height='600' fill='%23fff' fill-opacity='.1'/></svg>");
-
-/* Old Web light theme for the site */
+/* Old Web light theme for the site: teal desktop, white page, grey buttons */
 :root {
     --global-base-color                 : #{$primary-color};
-    --global-bg-color                   : #f7eed6;
-    --global-footer-bg-color            : transparent;
-    --global-border-color               : rgba(30, 27, 22, 0.2);
+    --global-bg-color                   : #fff;
+    --global-footer-bg-color            : #{$light-gray};
+    --global-border-color               : #{$gray};
     --global-dark-border-color          : #{$dark-gray};
-    --global-code-background-color      : #efe2bd;
-    --global-code-text-color            : #{$darker-gray};
+    --global-code-background-color      : #ffffe1;
+    --global-code-text-color            : #000;
     --global-fig-caption-color          : #{$dark-gray};
-    --global-link-color                 : #1f4fa8;
-    --global-link-color-hover           : #c0281c;
-    --global-link-color-visited         : #6a2c91;
-    --global-masthead-link-color        : #f2efe6;
-    --global-masthead-link-color-hover  : #fff;
-    --global-text-color                 : #{$darker-gray};
+    --global-link-color                 : #0000ee;
+    --global-link-color-hover           : #ff0000;
+    --global-link-color-visited         : #551a8b;
+    --global-masthead-link-color        : #000;
+    --global-masthead-link-color-hover  : #000;
+    --global-text-color                 : #000;
     --global-text-color-light           : #{$dark-gray};
-    --global-thead-color                : #ead7a3;
+    --global-thead-color                : #{$light-gray};
 
-    /* the tiled background */
-    --ow-desktop-color                  : #6e4123;
-    --ow-desktop                        : #{$desktop-tile};
-
-    /* the black glass header and footer bars, and their printing */
-    --ow-glass                          : #0c0c0f;
-    --ow-print                          : #f2efe6;
-    --ow-print-dim                      : #9a968c;
-    --ow-print-link                     : #8ab6ff;
-    --ow-needle                         : #ff2a1a;
-
-    /* the page panel */
-    --ow-panel                          : linear-gradient(180deg, #fcf6e6 0%, #f4e8c8 100%);
-    --ow-title                          : #{$darker-gray};
-    --ow-heading                        : #b3261e;
-    --ow-marker                         : #c0281c;
-
-    --ow-ticker-bg                      : #140a02;
-    --ow-ticker-text                    : #ffb43a;
-    --ow-select-bg                      : #1f4fa8;
+    /* Bevelled window chrome, as drawn by Windows 95 and Netscape */
+    --ow-face                           : #{$light-gray};
+    --ow-face-text                      : #000;
+    --ow-highlight                      : #fff;
+    --ow-light                          : #{$lighter-gray};
+    --ow-shadow                         : #{$gray};
+    --ow-dark-shadow                    : #000;
+    --ow-select-bg                      : #000080;
     --ow-select-text                    : #fff;
+
+    --ow-desktop-color                  : #008080;
+    --ow-desktop                        : #{$desktop-tile};
+    --ow-bar-bg                         : #{$light-gray};
+    --ow-bar-text                       : #000;
+    --ow-panel-border                   : #{$light-gray};
+    --ow-heading                        : #000080;
+    --ow-heading-shadow                 : #{$light-gray};
+    --ow-marquee-bg                     : #000080;
+    --ow-marquee-text                   : #ffff00;
+    --ow-bullet                         : #ff0000;
 }
