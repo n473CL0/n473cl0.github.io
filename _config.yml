@@ -313,7 +313,7 @@ defaults:
     values:
       layout: single
       author_profile: true
-      share: true
+      share: false
       comment: true
   # _research
   - scope:
@@ -322,7 +322,7 @@ defaults:
     values:
       layout: single
       author_profile: true
-      share: true
+      share: false
   # _talks
   - scope:
       path: ""
