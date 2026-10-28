@@ -1,16 +1,26 @@
 {% include base_path %}
 
 {% if page.previous or page.next %}
-  <nav class="pagination">
-    {% if page.previous %}
-      <a href="{{ base_path }}{{ page.previous.url }}" class="pagination--pager" title="{{ page.previous.title | markdownify | strip_html }}">{{ site.data.ui-text[site.locale].pagination_previous | default: "Previous" }}</a>
-    {% else %}
-      <a href="#" class="pagination--pager disabled">{{ site.data.ui-text[site.locale].pagination_previous | default: "Previous" }}</a>
+  {% assign index_url = "/" | append: page.collection | append: "/" %}
+  {% assign index_link = site.data.navigation.main | where: "url", index_url | first %}
+  <nav class="pager" aria-label="{{ index_link.title | default: page.collection | capitalize }} pages">
+    <div class="pager__prev">
+      {% if page.previous %}
+        <span class="pager__label">&laquo; {{ site.data.ui-text[site.locale].pagination_previous | default: "Previous" }}</span>
+        <a href="{{ base_path }}{{ page.previous.url }}" rel="prev">{{ page.previous.title | markdownify | strip_html | strip }}</a>
+      {% endif %}
+    </div>
+    {% if index_link %}
+      <div class="pager__up">
+        <span class="pager__label">Back to</span>
+        <a href="{{ base_path }}{{ index_link.url }}">{{ index_link.title }}</a>
+      </div>
     {% endif %}
-    {% if page.next %}
-      <a href="{{ base_path }}{{ page.next.url }}" class="pagination--pager" title="{{ page.next.title | markdownify | strip_html }}">{{ site.data.ui-text[site.locale].pagination_next | default: "Next" }}</a>
-    {% else %}
-      <a href="#" class="pagination--pager disabled">{{ site.data.ui-text[site.locale].pagination_next | default: "Next" }}</a>
-    {% endif %}
+    <div class="pager__next">
+      {% if page.next %}
+        <span class="pager__label">{{ site.data.ui-text[site.locale].pagination_next | default: "Next" }} &raquo;</span>
+        <a href="{{ base_path }}{{ page.next.url }}" rel="next">{{ page.next.title | markdownify | strip_html | strip }}</a>
+      {% endif %}
+    </div>
   </nav>
 {% endif %}

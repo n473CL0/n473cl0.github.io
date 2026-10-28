@@ -80,10 +80,17 @@ hr {
   background: $ow-rainbow;
 }
 
+/* the one loud rule on each page sits under its title */
 .page__title {
+  margin-bottom: 0.6em;
+  padding-bottom: 0.25em;
   color: var(--ow-heading);
   font-size: $type-size-2;
+  line-height: 1.1;
   text-shadow: 2px 2px 0 var(--ow-heading-shadow);
+  text-wrap: balance;
+  border-bottom: 4px solid;
+  border-image: $ow-rainbow 1;
 }
 
 .archive h1,
@@ -95,8 +102,107 @@ hr {
   color: var(--ow-heading);
 }
 
+/* section headings look the same on every page: CV sections are Markdown h1s, Portfolio's are h2s */
+.archive > h1:not(.page__title),
+.archive > h2,
 .page__content h2 {
+  margin: 2em 0 0.75em;
+  padding-bottom: 0.3em;
+  font-size: $type-size-4;
+  line-height: 1.2;
   border-bottom: 2px groove var(--ow-panel-border);
+}
+
+.archive > .page__title + h1,
+.archive > .page__title + h2 {
+  margin-top: 1em;
+}
+
+/* the heading carries its own rule, so the <hr> after each Portfolio heading would double it */
+.archive > h2 + hr {
+  display: none;
+}
+
+/*
+   Reading
+   ========================================================================== */
+
+/* list pages (CV, Portfolio, Research) keep the same comfortable line length as project pages */
+.archive {
+  @include breakpoint($large) {
+    @include suffix(2 of 12);
+  }
+}
+
+.page__content a,
+.archive a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.page__content,
+.archive {
+  ul,
+  ol {
+    padding-left: 1.4em;
+  }
+
+  ul {
+    list-style-type: square;
+  }
+
+  li {
+    margin-bottom: 0.4em;
+    padding-left: 0.2em;
+
+    &::marker {
+      color: var(--ow-heading);
+    }
+
+    ul {
+      margin-top: 0.4em;
+      list-style-type: circle;
+    }
+  }
+
+  ol > li::marker {
+    font-family: $sans-serif;
+    font-weight: bold;
+  }
+}
+
+/* CV entries: bullets stay close to their heading, and entries are spaced apart */
+.archive > p {
+  margin: 1.4em 0 0.4em;
+}
+
+.archive > ul {
+  margin: 0.4em 0 0;
+}
+
+.archive > h1 + p,
+.archive > h2 + p {
+  margin-top: 0;
+}
+
+/* the facts line that opens each project page, set as a status bar */
+.page__content > p:first-child > em:only-child {
+  display: block;
+  padding: 0.45em 0.75em;
+  color: var(--ow-bar-text);
+  font-family: $ow-ui-font;
+  font-size: $type-size-6;
+  font-style: normal;
+  line-height: 1.6;
+  background: var(--ow-bar-bg);
+  box-shadow: inset 1px 1px var(--ow-shadow), inset -1px -1px var(--ow-highlight);
+}
+
+.page__content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 3px ridge var(--ow-panel-border);
 }
 
 /* the page itself sits in a bordered "table" on the desktop */
@@ -348,16 +454,117 @@ hr {
    Lists, tables and buttons
    ========================================================================== */
 
-/* a shiny ball bullet in front of every project */
-.archive__item-title::before {
-  content: "";
-  display: inline-block;
-  width: 0.55em;
-  height: 0.55em;
-  margin-right: 0.4em;
-  vertical-align: 0.1em;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fff, var(--ow-bullet) 45%, #000);
+/* project lists: a shiny ball bullet hangs in the margin, so each title and its blurb share one edge */
+.archive__item {
+  padding-left: 1.5em;
+}
+
+.archive__item-title {
+  position: relative;
+  margin: 1.4em 0 0.2em;
+  line-height: 1.25;
+
+  /* out of flow, so the template's space before the link can't push the first line in */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0.35em;
+    left: -1.2em;
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff, var(--ow-bullet) 45%, #000);
+  }
+}
+
+.archive > h2 + .list__item .archive__item-title,
+.archive > h2 + hr + .list__item .archive__item-title,
+.archive > .page__title + .list__item .archive__item-title {
+  margin-top: 0.75em;
+}
+
+/* markdownify nests a <p> inside the excerpt's <p>, so the text lands in the paragraph after it */
+.archive__item-excerpt,
+.archive__item-excerpt + p {
+  margin: 0;
+  color: var(--global-text-color-light);
+  font-size: 0.95em;
+}
+
+/* previous / back to index / next, under each project */
+.pager {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  @include full();  // floated like the page blocks above it, so its top margin isn't lost to clearance
+  margin-top: 2.5em;
+  color: var(--ow-bar-text);
+  font-family: $ow-ui-font;
+  font-size: $type-size-6;
+  line-height: 1.35;
+  background: var(--ow-bar-bg);
+  @include ow-raised;
+
+  > div {
+    padding: 0.6em 0.9em;
+  }
+
+  a {
+    font-weight: bold;
+  }
+
+  &__up {
+    text-align: center;
+    border-left: 2px groove var(--ow-panel-border);
+    border-right: 2px groove var(--ow-panel-border);
+  }
+
+  &__next {
+    text-align: right;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 0.15em;
+    font-size: 0.85em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  @include breakpoint(max-width $small) {
+    grid-template-columns: 1fr 1fr;
+
+    &__up {
+      grid-column: span 2;
+      grid-row: 2;
+      border: 0;
+      border-top: 2px groove var(--ow-panel-border);
+    }
+  }
+}
+
+/* the (empty) taxonomy footer between the content and the share buttons only adds a gap */
+footer.page__meta {
+  margin-top: 0;
+}
+
+/* share buttons: present, but quieter than the content */
+.page__share {
+  margin-top: 2.5em;
+  border-top: 2px groove var(--ow-panel-border);
+
+  .btn {
+    margin: 0 0.3em 0.4em 0;
+    padding: 0.3em 0.7em;
+    font-size: $type-size-7;
+    font-weight: normal;
+  }
+}
+
+.page__share-title {
+  font-family: $ow-ui-font;
+  font-size: $type-size-7;
+  letter-spacing: 0.04em;
 }
 
 table {
