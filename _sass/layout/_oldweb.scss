@@ -358,20 +358,28 @@ hr {
   background: var(--ow-face-text);
 }
 
-/* scrolling welcome banner, with a pause button at the right-hand end */
+/* scrolling welcome banner; clicking it pauses it */
 .masthead__marquee {
-  position: relative;
   color: var(--ow-marquee-text);
   font-family: $ow-fun-font;
   font-size: $type-size-6;
   font-weight: bold;
   background: var(--ow-marquee-bg);
   border-top: 1px solid var(--ow-shadow);
+
+  &[role="button"] {
+    cursor: pointer;
+  }
+
+  &:focus-visible {
+    outline: 2px dotted var(--ow-marquee-text);
+    outline-offset: -4px;
+  }
 }
 
 .masthead__marquee-text {
   overflow: hidden;
-  margin: 0 2.5em 0 0;
+  margin: 0;
   padding: 0.25em 0;
   white-space: nowrap;
 
@@ -388,23 +396,8 @@ hr {
           animation-play-state: paused;
 }
 
-.masthead__marquee-toggle {
-  position: absolute;
-  top: 50%;
-  right: 0.5em;
-  width: 26px;
-  height: 20px;
-  padding: 0;
-  font-size: 9px;
-  line-height: 1;
-  cursor: pointer;
-  transform: translateY(-50%);
-  @include ow-button;
-}
-
 /* paused, or for anyone who prefers less motion: the whole message, still and centred */
 @mixin ow-marquee-still {
-  margin-left: 2.5em;
   text-align: center;
   white-space: normal;
 
@@ -432,12 +425,6 @@ hr {
 @media (prefers-reduced-motion: reduce) {
   .masthead__marquee-text {
     @include ow-marquee-still;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .masthead__marquee-toggle {
-    display: none;
   }
 }
 

@@ -20,14 +20,17 @@
           {% endfor %}
           <li id="theme-toggle" class="masthead__menu-item persist tail">
             <a role="button" tabindex="0" aria-label="Switch between light and dark theme" title="Switch between light and dark theme"><i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true"></i></a>
+            <script>
+              /* show the right icon from the start, instead of swapping sun for moon once the main script runs */
+              if (document.documentElement.getAttribute("data-theme") === "dark") { document.getElementById("theme-icon").className = "fa-solid fa-moon"; }
+            </script>
           </li>
         </ul>
         <ul class="hidden-links hidden"></ul>
       </nav>
     </div>
   </div>
-  <div class="masthead__marquee">
-    <p class="masthead__marquee-text" role="marquee"><span>&#9733; Welcome to {{ site.name }}'s homepage! &#9733;{% if site.author.bio %} {{ site.author.bio }} &#9733;{% endif %}{% if site.author.location %} {{ site.author.location }} &#9733;{% endif %} Thanks for visiting! &#9733;</span></p>
-    <button type="button" class="masthead__marquee-toggle" aria-pressed="false" aria-label="Pause the scrolling banner" title="Pause the scrolling banner"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+  <div class="masthead__marquee" role="button" tabindex="0" aria-pressed="false" aria-label="Pause the scrolling banner" title="Click to pause">
+    <p class="masthead__marquee-text"><span>&#9733; Welcome to {{ site.name }}'s homepage! &#9733;{% if site.author.bio %} {{ site.author.bio }} &#9733;{% endif %}{% if site.author.location %} {{ site.author.location }} &#9733;{% endif %} Thanks for visiting! &#9733;</span></p>
   </div>
 </div>
