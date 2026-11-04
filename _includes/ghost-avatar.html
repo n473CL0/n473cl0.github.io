@@ -1,0 +1,328 @@
+{% comment %}
+  The GitHub identicon (a 5x5 pixel ghost) drawn as inline SVG, with an eye that is alive.
+  Same grid as the 420px PNG GitHub serves: a 35-unit margin and 70-unit cells. The body path has the
+  eye hole filled in, and the eye is a separate background-coloured rectangle the script moves and reshapes.
+  Used by author-profile.html when the author has avatar_ghost set; pass the author's name as `name`.
+{% endcomment %}
+<svg class="ghost-avatar" viewBox="0 0 420 420" width="420" height="420" role="img" aria-label="{{ include.name | escape }}" shape-rendering="crispEdges">
+  <rect width="420" height="420" fill="#f0f0f0"/>
+  <path fill="#a09de0" d="M105 35H315V105H385V385H315V315H245V385H175V315H105V385H35V105H105Z"/>
+  <rect class="ghost-avatar__eye" x="175" y="105" width="70" height="70" fill="#f0f0f0"/>
+</svg>
+<!-- Two state machines drive the eye. The "mind" picks one behaviour at a time: follow the pointer, or, when
+     nobody is pointing (a phone, or a mouse left alone), rest, look around, wiggle, roll or peek into a leg.
+     The "lids" blink on their own schedule. Pulling hard toward a leg squeezes the eye thin enough to fit in.
+     The eye always keeps a quarter cell of ghost around it. Only block comments and explicit semicolons:
+     compress_html can join these lines. -->
+<script>
+  (function () {
+    var svg = document.currentScript && document.currentScript.previousElementSibling;
+    var eye = svg && svg.querySelector && svg.querySelector(".ghost-avatar__eye");
+    var stillAnyway = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!eye || !window.DOMPoint || !window.requestAnimationFrame || stillAnyway) { return; }
+
+    function random(low, high) { return low + Math.random() * (high - low); }
+    function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
+    function distance(a, b) { return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)); }
+
+    /* ---- The ghost's shape. SVG units; every position is the centre of the eye. ---- */
+
+    var EYE = 70;            /* the eye at rest is one cell */
+    var SQUEEZED = 35;       /* a leg is 70 wide, so a squeezed eye plus a margin each side just fits */
+    var STRETCH = 0.45;      /* a fully squeezed eye grows this much taller, where there is room */
+    var MARGIN = 17.5;       /* ghost kept on every side of the eye, so it never becomes a notch in the outline */
+    var SLIT = 0.08;         /* how open a shut eye still looks */
+    var REST = { x: 210, y: 140 };
+    /* The largest rectangles inside the ghost. Anything that fits in the ghost fits in one of them. */
+    var PARTS = [
+      { x0: 35, x1: 385, y0: 105, y1: 315 },   /* body */
+      { x0: 105, x1: 315, y0: 35, y1: 315 },   /* head, and the body under it */
+      { x0: 35, x1: 105, y0: 105, y1: 385 },   /* left leg, and the body above it */
+      { x0: 175, x1: 245, y0: 35, y1: 385 },   /* middle leg, up through the body and head */
+      { x0: 315, x1: 385, y0: 105, y1: 385 }   /* right leg, and the body above it */
+    ];
+    var LEGS = [70, 210, 350];
+
+    function widthAt(squeeze) { return EYE - (EYE - SQUEEZED) * squeeze; }
+
+    /* where the centre of an eye this wide can go in one part, or null if it does not fit */
+    function roomIn(part, w) {
+      var room = { x0: part.x0 + MARGIN + w / 2, x1: part.x1 - MARGIN - w / 2, y0: part.y0 + MARGIN + EYE / 2, y1: part.y1 - MARGIN - EYE / 2 };
+      return room.x0 <= room.x1 + 0.001 ? room : null;
+    }
+
+    /* the nearest place to p that an eye this wide can be */
+    function nearest(p, w) {
+      var best = REST;
+      var bestDistance = Infinity;
+      PARTS.forEach(function (part) {
+        var room = roomIn(part, w);
+        if (!room) { return; }
+        var spot = { x: Math.min(Math.max(p.x, room.x0), room.x1), y: Math.min(Math.max(p.y, room.y0), room.y1) };
+        var d = distance(spot, p);
+        if (d < bestDistance) { best = spot; bestDistance = d; }
+      });
+      return best;
+    }
+
+    function fits(p, w) { return distance(nearest(p, w), p) < 0.01; }
+
+    /* how tall the eye can be drawn at p, growing evenly up and down */
+    function headroom(p, w) {
+      var most = EYE;
+      PARTS.forEach(function (part) {
+        var room = roomIn(part, w);
+        if (room && p.x >= room.x0 - 0.01 && p.x <= room.x1 + 0.01) {
+          most = Math.max(most, 2 * Math.min(p.y - part.y0 - MARGIN, part.y1 - MARGIN - p.y));
+        }
+      });
+      return most;
+    }
+
+    /* a random place a full-size eye can look */
+    function somewhere() {
+      var room = roomIn(Math.random() < 0.7 ? PARTS[0] : PARTS[1], EYE);
+      return { x: random(room.x0, room.x1), y: random(room.y0, room.y1) };
+    }
+
+    /* ---- The pointer ---- */
+
+    var REACH = 175;         /* over the ghost the eye sits right under the pointer */
+    var PULL = 0.4;          /* beyond that it leans further, more slowly */
+    var FURTHEST = 330;
+    var HARD = 120;          /* this much strain against the edge squeezes the eye into a leg */
+    var EASY = 80;           /* and below this much it lets go */
+    var MOUSE_IDLE = 5;      /* seconds of a still mouse before the eye starts amusing itself */
+    var TOUCH_LINGER = 1.2;  /* seconds the eye keeps watching where a finger left */
+
+    var pointer = { client: null, lastMoved: -Infinity, touch: false, down: false };
+
+    function toGhost(client) {
+      var screen = svg.getScreenCTM();
+      var p = screen && new DOMPoint(client.x, client.y).matrixTransform(screen.inverse());
+      return p && isFinite(p.x) && isFinite(p.y) ? p : null;
+    }
+
+    function lean(p) {
+      var dx = p.x - REST.x;
+      var dy = p.y - REST.y;
+      var d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var reach = d <= REACH ? d : Math.min(REACH + (d - REACH) * PULL, FURTHEST);
+      return { x: REST.x + dx / d * reach, y: REST.y + dy / d * reach };
+    }
+
+    /* ---- The mind: one behaviour at a time ---- */
+
+    var clock = 0;
+    var pos = { x: REST.x, y: REST.y };
+    var vel = { x: 0, y: 0 };
+    var squeeze = 0;
+    var mind = { state: "", time: 0, length: 0, goal: REST, squeeze: false, hz: 3, damping: 0.7, shake: 0, jelly: 0, turn: 1, start: 0 };
+
+    var BEHAVIOURS = {
+      follow: {
+        enter: function () { mind.hz = 4.5; mind.damping = 0.9; },
+        update: function () {
+          var quiet = clock - pointer.lastMoved;
+          if (!pointer.client || (!pointer.down && quiet > (pointer.touch ? TOUCH_LINGER : MOUSE_IDLE))) { return "rest"; }
+          var p = toGhost(pointer.client);
+          if (!p) { return null; }
+          mind.goal = lean(p);
+          var full = nearest(mind.goal, EYE);
+          var thin = nearest(mind.goal, SQUEEZED);
+          var strain = distance(mind.goal, full);
+          var intoLeg = thin.y > full.y + 10;
+          if (!intoLeg || strain < EASY) {
+            mind.squeeze = false;
+          } else if (strain > HARD) {
+            mind.squeeze = true;
+          }
+          return null;
+        }
+      },
+      rest: {
+        enter: function () { mind.goal = REST; mind.squeeze = false; mind.hz = 2.5; mind.damping = 0.75; mind.length = random(1.2, 3); },
+        update: function () {
+          if (mind.time < mind.length) { return null; }
+          var r = Math.random();
+          return r < 0.4 ? "look" : r < 0.6 ? "wiggle" : r < 0.72 ? "roll" : r < 0.86 ? "peek" : "rest";
+        }
+      },
+      look: {
+        enter: function () {
+          var spot = somewhere();
+          for (var tries = 0; tries < 6 && distance(spot, pos) < 50; tries += 1) { spot = somewhere(); }
+          mind.goal = spot; mind.squeeze = false; mind.hz = 3.2; mind.damping = 0.55; mind.length = random(0.7, 1.8);
+        },
+        update: function () {
+          if (mind.time < mind.length) { return null; }
+          return Math.random() < 0.4 ? "look" : "rest";
+        }
+      },
+      wiggle: {
+        enter: function () { mind.goal = { x: pos.x, y: pos.y }; mind.squeeze = false; mind.hz = 3; mind.damping = 0.8; mind.length = 0.8; },
+        update: function () {
+          var fade = Math.max(0, 1 - mind.time / mind.length);
+          var phase = 2 * Math.PI * 6 * mind.time;
+          mind.shake = 13 * Math.sin(phase) * fade;
+          mind.jelly = 0.14 * Math.cos(phase) * fade;
+          return mind.time < mind.length ? null : "rest";
+        }
+      },
+      roll: {
+        enter: function () {
+          mind.squeeze = false; mind.hz = 4; mind.damping = 0.8; mind.length = random(1.1, 1.6);
+          mind.turn = Math.random() < 0.5 ? 1 : -1;
+          mind.start = Math.atan2(pos.y - 175, pos.x - 210);
+        },
+        update: function () {
+          var angle = mind.start + mind.turn * 2 * Math.PI * Math.min(mind.time / mind.length, 1);
+          mind.goal = { x: 210 + 75 * Math.cos(angle), y: 175 + 75 * Math.sin(angle) };
+          return mind.time < mind.length ? null : "rest";
+        }
+      },
+      peek: {
+        enter: function () { mind.goal = { x: pick(LEGS), y: 400 }; mind.squeeze = true; mind.hz = 2.2; mind.damping = 0.85; mind.length = random(1.8, 2.8); },
+        update: function () { return mind.time < mind.length ? null : "rest"; }
+      }
+    };
+
+    function go(state) {
+      mind.state = state;
+      mind.time = 0;
+      mind.shake = 0;
+      mind.jelly = 0;
+      BEHAVIOURS[state].enter();
+      svg.setAttribute("data-state", state);
+    }
+
+    /* ---- The lids: blink every few seconds, sometimes twice ---- */
+
+    var LIDS = {
+      open: { length: function () { return random(2.2, 6); }, next: function () { return "closing"; } },
+      closing: { length: function () { return 0.07; }, next: function () { return "shut"; } },
+      shut: { length: function () { return 0.05; }, next: function () { return "opening"; } },
+      opening: { length: function () { return 0.12; }, next: function () { return Math.random() < 0.2 ? "closing" : "open"; } }
+    };
+    var lids = { state: "open", time: 0, length: random(1, 4) };
+
+    function openness() {
+      var t = Math.min(lids.time / lids.length, 1);
+      return lids.state === "closing" ? 1 - t : lids.state === "shut" ? 0 : lids.state === "opening" ? t : 1;
+    }
+
+    /* ---- Each frame ---- */
+
+    var STEP = 1 / 120;
+
+    function think(dt) {
+      mind.time += dt;
+      var next = BEHAVIOURS[mind.state].update();
+      if (next) { go(next); }
+      lids.time += dt;
+      if (lids.time >= lids.length) {
+        lids.state = LIDS[lids.state].next();
+        lids.time = 0;
+        lids.length = LIDS[lids.state].length();
+      }
+    }
+
+    function move(dt) {
+      /* squeeze or relax toward the shape the mind wants, but never widen where the wider eye would not fit */
+      var s = mind.squeeze ? 1 : 0;
+      s = Math.abs(s - squeeze) < 0.002 ? s : squeeze + (s - squeeze) * (1 - Math.exp(-dt / 0.08));
+      if (s < squeeze && !fits(pos, widthAt(s))) { s = squeeze; }
+      squeeze = s;
+
+      var w = widthAt(squeeze);
+      var target = nearest(mind.goal, mind.squeeze ? SQUEEZED : EYE);
+      var omega = 2 * Math.PI * mind.hz;
+      for (var left = dt; left > 0; left -= STEP) {
+        var h = Math.min(left, STEP);
+        vel.x += (omega * omega * (target.x - pos.x) - 2 * mind.damping * omega * vel.x) * h;
+        vel.y += (omega * omega * (target.y - pos.y) - 2 * mind.damping * omega * vel.y) * h;
+        var inside = nearest({ x: pos.x + vel.x * h, y: pos.y + vel.y * h }, w);
+        if (Math.abs(inside.x - pos.x - vel.x * h) > 0.001) { vel.x = 0; }
+        if (Math.abs(inside.y - pos.y - vel.y * h) > 0.001) { vel.y = 0; }
+        pos = inside;
+      }
+    }
+
+    var drawn = {};
+    function set(name, value) {
+      if (drawn[name] === undefined || Math.abs(drawn[name] - value) > 0.05) {
+        drawn[name] = value;
+        eye.setAttribute(name, value.toFixed(2));
+      }
+    }
+
+    function draw() {
+      var w = widthAt(squeeze);
+      var at = mind.shake ? nearest({ x: pos.x + mind.shake, y: pos.y }, w) : pos;
+      var wide = w * (1 - Math.max(0, mind.jelly));
+      var tall = Math.min(EYE * (1 + STRETCH * squeeze), headroom(at, w));
+      tall = tall * (1 - Math.max(0, -mind.jelly)) * (SLIT + (1 - SLIT) * openness());
+      set("x", at.x - wide / 2);
+      set("y", at.y - tall / 2);
+      set("width", wide);
+      set("height", tall);
+    }
+
+    var frame = 0;
+    var last = 0;
+    var onScreen = true;
+
+    function tick(now) {
+      frame = 0;
+      if (!onScreen) { last = 0; return; }
+      var dt = last ? Math.min((now - last) / 1000, 0.05) : 1 / 60;
+      last = now;
+      clock += dt;
+      think(dt);
+      move(dt);
+      draw();
+      frame = window.requestAnimationFrame(tick);
+    }
+
+    function wake() {
+      if (!frame && onScreen) { frame = window.requestAnimationFrame(tick); }
+    }
+
+    /* ---- Listening ---- */
+
+    function notice(e) {
+      pointer.client = { x: e.clientX, y: e.clientY };
+      pointer.touch = e.pointerType === "touch";
+      pointer.lastMoved = clock;
+      if (mind.state !== "follow") { go("follow"); }
+      wake();
+    }
+
+    function letGo() {
+      pointer.down = false;
+      pointer.lastMoved = clock;
+    }
+
+    document.addEventListener("pointermove", notice, { passive: true });
+    document.addEventListener("pointerdown", function (e) {
+      pointer.down = e.pointerType === "touch";
+      notice(e);
+    }, { passive: true });
+    document.addEventListener("pointerup", letGo, { passive: true });
+    document.addEventListener("pointercancel", letGo, { passive: true });
+    /* the pointer left the window */
+    document.addEventListener("mouseout", function (e) {
+      if (!e.relatedTarget) { pointer.client = null; }
+    });
+    /* rest while the ghost is scrolled out of sight */
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[entries.length - 1].isIntersecting;
+        wake();
+      }).observe(svg);
+    }
+
+    go("rest");
+    wake();
+  })();
+</script>

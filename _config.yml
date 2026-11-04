@@ -24,6 +24,7 @@ repository               : "n473CL0/n473cl0.github.io"
 author:
   # Biographic information
   avatar           : "https://avatars.githubusercontent.com/u/113424166?v=4" # GitHub profile picture for now; to use your own, save it as images/profile.png and set this to "profile.png"
+  avatar_ghost     : true # draw the GitHub identicon as an SVG whose eye follows the mouse, in place of `avatar`; set to false to show `avatar` instead
   name             : "Nathan Fairclough"
   pronouns         : # example: "she/her"  
   bio              : "MEng Engineering Mathematics"

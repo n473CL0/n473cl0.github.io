@@ -363,7 +363,8 @@ hr {
 }
 
 /* the portrait in black and white, square-cut */
-.author__avatar img {
+.author__avatar img,
+.author__avatar .ghost-avatar {
   border-radius: 0;
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
@@ -384,7 +385,8 @@ hr {
     width: calc((100% - #{2 * $sw-gutter}) / 3 * 2 + #{$sw-gutter});
   }
 
-  .author__avatar img {
+  .author__avatar img,
+  .author__avatar .ghost-avatar {
     width: 100%;
     max-width: none;
     aspect-ratio: 1;

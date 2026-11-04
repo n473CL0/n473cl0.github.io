@@ -153,7 +153,8 @@
     height: auto;
   }
 
-  img {
+  img,
+  .ghost-avatar {
     max-width: 175px;
     border-radius: 50%;
 
@@ -161,6 +162,15 @@
       padding: 5px;
       border: 1px solid var(--global-border-color);
     }
+  }
+
+  // the interactive identicon (_includes/ghost-avatar.html) stands in for the <img>, so size it like one
+  .ghost-avatar {
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    // a finger dragged from the ghost pulls its eye instead of scrolling the page
+    touch-action: none;
   }
 }
 
