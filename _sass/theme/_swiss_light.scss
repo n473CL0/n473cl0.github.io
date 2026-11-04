@@ -1,7 +1,7 @@
 /* ==========================================================================
     SWISS THEME - LIGHT VERSION
     International Typographic Style: one grotesk typeface, black on white,
-    and a single scholarly blue for emphasis.
+    and a single accent: the lavender of the GitHub identicon (the ghost).
     ========================================================================== */
 
 /* One sans-serif family for everything. Inter is self-hosted (see layout/_swiss.scss),
@@ -14,7 +14,8 @@ $header-font-family         : $sans-serif;
 $caption-font-family        : $sans-serif;
 
 /* Color codes used for the theme */
-$primary-color              : #1e56a0;  // a deep scholarly blue: 7.3:1 on white, and for white text on it
+$ghost-color                : #a09de0;  // the identicon's own colour: 2.5:1 on white, so for marks and fields, not text
+$primary-color              : #615ccc;  // the same hue darkened to 5.4:1 on white, for text and outlines
 $gray                       : #5c5c5c;
 $dark-gray                  : #2b2b2b;
 $darker-gray                : #111;
@@ -59,9 +60,10 @@ $sidebar-screen-min-width   : 1024px;
     --global-text-color-light           : #{$gray};
     --global-thead-color                : #{$lighter-gray};
 
-    --sw-accent                         : #{$primary-color};  // blue text and marks on the page
-    --sw-accent-field                   : #{$primary-color};  // solid blue areas, with --sw-on-accent text
-    --sw-on-accent                      : #fff;
+    --sw-accent                         : #{$primary-color};  // accent text: the page you're on, hovers, link rules, focus outlines
+    --sw-accent-mark                    : #{$ghost-color};    // marks that aren't text: the square by the name, quote rules
+    --sw-accent-field                   : #{$ghost-color};    // solid areas, with --sw-on-accent text
+    --sw-on-accent                      : #{$darker-gray};    // 7.6:1 on the field
     --sw-rule                           : #{$darker-gray};    // rules that open a section
     --sw-hairline                       : #{$light-gray};     // rules between items
 }

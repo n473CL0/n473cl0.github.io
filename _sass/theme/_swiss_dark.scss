@@ -1,15 +1,16 @@
 /* ==========================================================================
     SWISS THEME - DARK VERSION
-    The same rules reversed out: off-white on near-black, with the blue
-    lifted so it keeps its contrast. The Sass settings (typefaces, radius,
-    notice colours) come from _swiss_light.scss, so only colours change here.
+    The same rules reversed out: off-white on near-black. The ghost's lavender
+    is light enough to use as it is, for text as well as marks. The Sass
+    settings (typefaces, radius, notice colours) come from _swiss_light.scss,
+    so only colours change here.
     ========================================================================== */
 
 /* Swiss dark theme for the site */
 html[data-theme="dark"] {
     color-scheme                        : dark;
 
-    --global-base-color                 : #6f9ce0;
+    --global-base-color                 : #a09de0;
     --global-bg-color                   : #111;
     --global-footer-bg-color            : #111;
     --global-border-color               : #333;
@@ -18,17 +19,18 @@ html[data-theme="dark"] {
     --global-code-text-color            : #ededed;
     --global-fig-caption-color          : #9a9a9a;
     --global-link-color                 : #ededed;
-    --global-link-color-hover           : #6f9ce0;
+    --global-link-color-hover           : #a09de0;
     --global-link-color-visited         : #ededed;
     --global-masthead-link-color        : #ededed;
-    --global-masthead-link-color-hover  : #6f9ce0;
+    --global-masthead-link-color-hover  : #a09de0;
     --global-text-color                 : #ededed;
     --global-text-color-light           : #9a9a9a;
     --global-thead-color                : #1f1f1f;
 
-    --sw-accent                         : #6f9ce0;  // 6.8:1 on the near-black page
-    --sw-accent-field                   : #1e56a0;  // the same field as in light mode: white text stays readable on it
-    --sw-on-accent                      : #fff;
+    --sw-accent                         : #a09de0;  // 7.6:1 on the near-black page
+    --sw-accent-mark                    : #a09de0;
+    --sw-accent-field                   : #a09de0;  // the same field as in light mode, with the same dark text
+    --sw-on-accent                      : #111;
     --sw-rule                           : #ededed;
     --sw-hairline                       : #333;
 }

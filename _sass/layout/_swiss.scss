@@ -263,7 +263,7 @@ hr {
   }
 }
 
-/* the page you're on is marked in blue */
+/* the page you're on is marked in the accent */
 .masthead__menu-item.selected a,
 .masthead__menu-item.selected a:hover {
   color: var(--sw-accent);
@@ -271,7 +271,7 @@ hr {
   border-bottom: 0;
 }
 
-/* the site title: a bold logotype after a blue square */
+/* the site title: a bold logotype after a square in the ghost's colour (the favicon is the same square) */
 .greedy-nav .masthead__menu-item--lg {
   padding-right: 0;
 
@@ -289,7 +289,7 @@ hr {
     width: 0.72em;
     height: 0.72em;
     margin-right: 0.45em;
-    background: var(--sw-accent);
+    background: var(--sw-accent-mark);
     -webkit-transform: none;
             transform: none;
   }
@@ -409,10 +409,10 @@ hr {
     display: none;
   }
 
-  /* the base theme gives each icon its brand colour; here they all take the accent */
+  /* the base theme gives each icon its brand colour; here they are all the colour of the text */
   i,
   i::before {
-    color: var(--sw-accent);
+    color: var(--global-text-color);
   }
 
   .icon-pad-right {
@@ -458,9 +458,9 @@ hr {
     padding-left: 1.25em;
   }
 
-  /* the en dash: the list marker of Swiss and German typesetting */
+  /* square bullets, echoing the square by the name */
   ul {
-    list-style-type: "\2013\00a0\00a0";
+    list-style-type: square;
   }
 
   li {
@@ -485,7 +485,7 @@ hr {
     margin: $sw-section-space 0;
     padding-left: 1em;
     font-style: normal;
-    border-left: 2px solid var(--sw-accent);
+    border-left: 2px solid var(--sw-accent-mark);
   }
 
   img {
@@ -499,7 +499,7 @@ hr {
   margin-bottom: #{$sw-line}em;
 }
 
-/* links: the text colour, underlined with a blue rule; blue on hover */
+/* links: the text colour, underlined with a rule in the accent, which they turn on hover */
 .page__content a,
 .archive a,
 .author__urls a,
@@ -565,16 +565,20 @@ hr {
   }
 
   /* headings hang in the left two columns, level with the first line of their text. Margins don't
-     collapse in a grid, so one line here plus the line under the previous block makes the usual two */
+     collapse in a grid, so one line here plus the line under the previous block makes the usual two.
+     Each heading reaches across the gutter (its text still stops short of it), so its rule runs straight
+     on into the rule over the text beside it */
   .page__content > h2,
   .archive > h1:not(.page__title),
   .archive > h2 {
     grid-column: 1 / span 2;
     margin-top: #{$sw-line}rem;
+    margin-right: -$sw-gutter;
     margin-bottom: 0;
+    padding-right: $sw-gutter;
   }
 
-  /* the text beside each heading opens with the same rule, broken only by the gutter */
+  /* the text beside each heading opens with the same rule */
   .page__content > h2 + *,
   .archive > h1:not(.page__title) + *,
   .archive > h2 + :not(.list__item) {
@@ -641,7 +645,7 @@ hr {
   }
 }
 
-/* shown on Portfolio / Research while every project is a draft: a solid blue field */
+/* shown on Portfolio / Research while every project is a draft: a solid field in the ghost's colour */
 .under-construction {
   margin: 0 0 2rem;
   padding: 1.25rem 1.5rem 1.5rem;
@@ -847,6 +851,7 @@ td {
     --global-code-text-color            : #000;
     --global-code-background-color      : transparent;
     --sw-accent                         : #000;
+    --sw-accent-mark                    : #000;
     --sw-accent-field                   : transparent;
     --sw-on-accent                      : #000;
     --sw-rule                           : #000;
