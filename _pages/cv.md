@@ -5,9 +5,14 @@ permalink: /cv/
 author_profile: true
 redirect_from:
   - /resume
+under_construction: true  # shows the "Under construction" notice instead of the CV below; set to false to show the CV again
 ---
 
 {% include base_path %}
+
+{% if page.under_construction %}
+{% include under-construction.html %}
+{% else %}
 
 Education
 ======
@@ -43,3 +48,5 @@ Skills and interests
 * Tools: Git, Docker, Linux
 * Quantitative: probability and statistics, machine learning, time-series analysis, NLP, curve construction
 * Interests: composing and playing music, running, windsurfing, reading
+
+{% endif %}

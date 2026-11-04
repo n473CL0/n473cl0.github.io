@@ -1,5 +1,12 @@
 {% include base_path %}
+{% comment %}
+  Shown on Portfolio and Research while every project is a draft, and on the CV while _pages/cv.md has
+  under_construction: true. It points to the CV only while the CV is showing; otherwise to LinkedIn.
+{% endcomment %}
+{% assign cv = site.pages | where: "permalink", "/cv/" | first %}
+{% capture elsewhere %}{% if cv and cv.under_construction != true and page.permalink != "/cv/" %}the highlights are on my <a href="{{ base_path }}/cv/">CV</a>{% elsif site.author.linkedin %}my experience is on <a href="https://www.linkedin.com/in/{{ site.author.linkedin }}">LinkedIn</a>{% endif %}{% endcapture %}
+{% capture code %}{% if site.author.github %}the code is on <a href="https://github.com/{{ site.author.github }}">GitHub</a>{% endif %}{% endcapture %}
 <div class="under-construction">
   <p class="under-construction__sign">Under construction</p>
-  <p>Write-ups are on their way. In the meantime, the highlights are on my <a href="{{ base_path }}/cv/">CV</a>{% if site.author.github %} and the code is on <a href="https://github.com/{{ site.author.github }}">GitHub</a>{% endif %}.</p>
+  <p>{% if page.permalink == "/cv/" %}My CV is being updated.{% else %}Write-ups are on their way.{% endif %}{% if elsewhere != "" or code != "" %} In the meantime, {{ elsewhere }}{% if elsewhere != "" and code != "" %} and {% endif %}{{ code }}.{% endif %}</p>
 </div>
