@@ -2,8 +2,8 @@
    SWISS SKIN
    International Typographic Style over the base layout: one 12-column grid
    shared by the masthead, page and footer; one grotesk in two weights;
-   flush-left, ragged-right text; numbered section headings hung in their own
-   column; black rules and a single red.
+   flush-left, ragged-right text; section headings hung in their own column;
+   black rules and a single scholarly blue.
    Colours come from theme/_swiss_light.scss and theme/_swiss_dark.scss.
    ========================================================================== */
 
@@ -39,9 +39,8 @@ $sw-content-columns         : 9;
   column-gap: $sw-gutter;
 }
 
-/* a section opens with a rule and a red number above its heading */
+/* a section opens with a rule above its heading */
 @mixin sw-section-head {
-  counter-increment: sw-section;
   margin: $sw-section-space 0 0.5rem;
   padding: 0.6rem 0 0;
   font-size: 1rem;
@@ -49,14 +48,6 @@ $sw-content-columns         : 9;
   line-height: $sw-line;
   border-top: 1px solid var(--sw-rule);
   border-bottom: 0;
-
-  &::before {
-    content: counter(sw-section, decimal-leading-zero);
-    display: block;
-    color: var(--sw-red);
-    font-weight: 400;
-    font-variant-numeric: tabular-nums;
-  }
 }
 
 /*
@@ -85,11 +76,11 @@ body {
 }
 
 ::selection {
-  color: var(--sw-on-red);
-  background: var(--sw-red-field);
+  color: var(--sw-on-accent);
+  background: var(--sw-accent-field);
 }
 
-/* a red outline for keyboard users only */
+/* a blue outline for keyboard users only */
 a:focus,
 button:focus {
   outline: none;
@@ -97,7 +88,7 @@ button:focus {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--sw-red);
+  outline: 2px solid var(--sw-accent);
   outline-offset: 2px;
 }
 
@@ -272,15 +263,15 @@ hr {
   }
 }
 
-/* the page you're on is marked in red */
+/* the page you're on is marked in blue */
 .masthead__menu-item.selected a,
 .masthead__menu-item.selected a:hover {
-  color: var(--sw-red);
+  color: var(--sw-accent);
   font-weight: inherit;
   border-bottom: 0;
 }
 
-/* the site title: a bold logotype after a red square */
+/* the site title: a bold logotype after a blue square */
 .greedy-nav .masthead__menu-item--lg {
   padding-right: 0;
 
@@ -298,7 +289,7 @@ hr {
     width: 0.72em;
     height: 0.72em;
     margin-right: 0.45em;
-    background: var(--sw-red);
+    background: var(--sw-accent);
     -webkit-transform: none;
             transform: none;
   }
@@ -319,7 +310,7 @@ hr {
   }
 
   a:hover {
-    color: var(--sw-red);
+    color: var(--sw-accent);
     background: none;
   }
 }
@@ -408,7 +399,7 @@ hr {
   }
 }
 
-/* a typographic list: the words carry it, so the icons go */
+/* a short list with one-colour icons, set to a fixed width so the words line up */
 .author__urls {
   border: 1px solid var(--sw-rule);
   box-shadow: none;
@@ -418,8 +409,15 @@ hr {
     display: none;
   }
 
-  i {
-    display: none;
+  /* the base theme gives each icon its brand colour; here they all take the accent */
+  i,
+  i::before {
+    color: var(--sw-accent);
+  }
+
+  .icon-pad-right {
+    padding-right: 0;
+    margin-right: 0.45em;
   }
 
   li {
@@ -449,8 +447,6 @@ hr {
 
 .page__content,
 .archive {
-  counter-reset: sw-section;
-
   h3 {
     margin: #{$sw-line}em 0 0.25em;
     font-size: 1rem;
@@ -489,7 +485,7 @@ hr {
     margin: $sw-section-space 0;
     padding-left: 1em;
     font-style: normal;
-    border-left: 2px solid var(--sw-red);
+    border-left: 2px solid var(--sw-accent);
   }
 
   img {
@@ -503,14 +499,14 @@ hr {
   margin-bottom: #{$sw-line}em;
 }
 
-/* links: the text colour, underlined with a red rule; red on hover */
+/* links: the text colour, underlined with a blue rule; blue on hover */
 .page__content a,
 .archive a,
 .author__urls a,
 .pager a {
   color: var(--global-text-color);
   text-decoration: underline;
-  text-decoration-color: var(--sw-red);
+  text-decoration-color: var(--sw-accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
 
@@ -519,7 +515,7 @@ hr {
   }
 
   &:hover {
-    color: var(--sw-red);
+    color: var(--sw-accent);
     text-decoration: underline;
   }
 }
@@ -564,15 +560,8 @@ hr {
   }
 
   /* blocks that span the heading and text columns together */
-  .archive > .list__item,
   .page__content > p:first-child:has(> em:only-child) {
     grid-column: 1 / span 8;
-  }
-
-  /* a heading over a list of pages (the sitemap) runs across the list instead of beside it */
-  .archive > h2:has(+ .list__item) {
-    grid-column: 1 / span 8;
-    margin-bottom: 0.75rem;
   }
 
   /* headings hang in the left two columns, level with the first line of their text. Margins don't
@@ -592,6 +581,15 @@ hr {
     margin-top: #{$sw-line}rem;
     padding-top: 0.6rem;
     border-top: 1px solid var(--sw-rule);
+  }
+
+  /* and so does a list of pages beside its heading (the sitemap) */
+  .archive > h2 + .list__item {
+    margin-top: #{$sw-line}rem;
+
+    > .archive__item {
+      border-top-color: var(--sw-rule);
+    }
   }
 
   .archive > .page__title + h1,
@@ -615,27 +613,10 @@ hr {
    Lists of projects, tables and buttons
    ========================================================================== */
 
-/* a numbered index, one project per rule */
-.archive {
-  counter-reset: sw-section sw-item;
-
-  > h2 {
-    counter-reset: sw-item;
-  }
-}
-
+/* an index, one project per rule */
 .archive__item {
-  counter-increment: sw-item;
   padding: 0.75rem 0 1.5rem;
   border-top: 1px solid var(--sw-hairline);
-
-  &::before {
-    content: counter(sw-item, decimal-leading-zero);
-    display: block;
-    color: var(--sw-red);
-    font-size: 0.875rem;
-    font-variant-numeric: tabular-nums;
-  }
 
   p {
     margin: 0;
@@ -660,28 +641,12 @@ hr {
   }
 }
 
-@include breakpoint($large) {
-  .archive__item {
-    @include sw-grid($sw-content-columns - 1);
-
-    &::before {
-      grid-column: 1 / span 2;
-      font-size: 1.25rem;
-      line-height: 1.3;
-    }
-
-    > * {
-      grid-column: 3 / span 6;
-    }
-  }
-}
-
-/* shown on Portfolio / Research while every project is a draft: a solid red field */
+/* shown on Portfolio / Research while every project is a draft: a solid blue field */
 .under-construction {
   margin: 0 0 2rem;
   padding: 1.25rem 1.5rem 1.5rem;
-  color: var(--sw-on-red);
-  background: var(--sw-red-field);
+  color: var(--sw-on-accent);
+  background: var(--sw-accent-field);
 
   p {
     margin: 0;
@@ -793,9 +758,9 @@ td {
   border: 1px solid var(--sw-rule) !important;
 
   &:hover {
-    color: var(--sw-on-red) !important;
-    background: var(--sw-red-field);
-    border-color: var(--sw-red-field) !important;
+    color: var(--sw-on-accent) !important;
+    background: var(--sw-accent-field);
+    border-color: var(--sw-accent-field) !important;
   }
 }
 
@@ -834,7 +799,7 @@ td {
     text-underline-offset: 0.22em;
 
     &:hover {
-      color: var(--sw-red);
+      color: var(--sw-accent);
       text-decoration: underline;
       text-decoration-color: currentColor;
     }
@@ -881,9 +846,9 @@ td {
     --global-link-color-visited         : #000;
     --global-code-text-color            : #000;
     --global-code-background-color      : transparent;
-    --sw-red                            : #000;
-    --sw-red-field                      : transparent;
-    --sw-on-red                         : #000;
+    --sw-accent                         : #000;
+    --sw-accent-field                   : transparent;
+    --sw-on-accent                      : #000;
     --sw-rule                           : #000;
     --sw-hairline                       : #999;
   }

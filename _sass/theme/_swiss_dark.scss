@@ -1,6 +1,6 @@
 /* ==========================================================================
     SWISS THEME - DARK VERSION
-    The same rules reversed out: off-white on near-black, with the red
+    The same rules reversed out: off-white on near-black, with the blue
     lifted so it keeps its contrast. The Sass settings (typefaces, radius,
     notice colours) come from _swiss_light.scss, so only colours change here.
     ========================================================================== */
@@ -9,7 +9,7 @@
 html[data-theme="dark"] {
     color-scheme                        : dark;
 
-    --global-base-color                 : #ff453a;
+    --global-base-color                 : #6f9ce0;
     --global-bg-color                   : #111;
     --global-footer-bg-color            : #111;
     --global-border-color               : #333;
@@ -18,17 +18,17 @@ html[data-theme="dark"] {
     --global-code-text-color            : #ededed;
     --global-fig-caption-color          : #9a9a9a;
     --global-link-color                 : #ededed;
-    --global-link-color-hover           : #ff453a;
+    --global-link-color-hover           : #6f9ce0;
     --global-link-color-visited         : #ededed;
     --global-masthead-link-color        : #ededed;
-    --global-masthead-link-color-hover  : #ff453a;
+    --global-masthead-link-color-hover  : #6f9ce0;
     --global-text-color                 : #ededed;
     --global-text-color-light           : #9a9a9a;
     --global-thead-color                : #1f1f1f;
 
-    --sw-red                            : #ff453a;
-    --sw-red-field                      : #da291c;  // the same field as in light mode: white text stays readable on it
-    --sw-on-red                         : #fff;
+    --sw-accent                         : #6f9ce0;  // 6.8:1 on the near-black page
+    --sw-accent-field                   : #1e56a0;  // the same field as in light mode: white text stays readable on it
+    --sw-on-accent                      : #fff;
     --sw-rule                           : #ededed;
     --sw-hairline                       : #333;
 }

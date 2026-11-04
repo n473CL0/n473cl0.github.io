@@ -1,7 +1,7 @@
 /* ==========================================================================
     SWISS THEME - LIGHT VERSION
     International Typographic Style: one grotesk typeface, black on white,
-    and a single red for emphasis.
+    and a single scholarly blue for emphasis.
     ========================================================================== */
 
 /* One sans-serif family for everything. Inter is self-hosted (see layout/_swiss.scss),
@@ -14,7 +14,7 @@ $header-font-family         : $sans-serif;
 $caption-font-family        : $sans-serif;
 
 /* Color codes used for the theme */
-$primary-color              : #da291c;  // Swiss flag red (Pantone 485 C)
+$primary-color              : #1e56a0;  // a deep scholarly blue: 7.3:1 on white, and for white text on it
 $gray                       : #5c5c5c;
 $dark-gray                  : #2b2b2b;
 $darker-gray                : #111;
@@ -59,9 +59,9 @@ $sidebar-screen-min-width   : 1024px;
     --global-text-color-light           : #{$gray};
     --global-thead-color                : #{$lighter-gray};
 
-    --sw-red                            : #{$primary-color};  // red text and marks on the page
-    --sw-red-field                      : #{$primary-color};  // solid red areas, with --sw-on-red text
-    --sw-on-red                         : #fff;
+    --sw-accent                         : #{$primary-color};  // blue text and marks on the page
+    --sw-accent-field                   : #{$primary-color};  // solid blue areas, with --sw-on-accent text
+    --sw-on-accent                      : #fff;
     --sw-rule                           : #{$darker-gray};    // rules that open a section
     --sw-hairline                       : #{$light-gray};     // rules between items
 }
