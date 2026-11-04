@@ -1,49 +1,8 @@
-{% include base_path %}
 <!-- start custom footer snippets -->
 
-<!-- Old Web 88x31 buttons -->
-<div class="page__footer-badges">
-  <a class="button88 button88--jekyll" href="https://jekyllrb.com" rel="nofollow"><small>Powered by</small><strong>Jekyll</strong></a>
-  <a class="button88 button88--github" href="https://pages.github.com" rel="nofollow"><small>Hosted on</small><strong>GitHub</strong></a>
-  {% if site.atom_feed.hide != true %}
-  <a class="button88 button88--feed" href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ base_path }}/feed.xml{% endif %}"><small>Atom feed</small><strong>XML</strong></a>
-  {% endif %}
-  <span class="button88 button88--browser"><small>Viewable with</small><strong>Any browser</strong></span>
-</div>
-
-<!-- Click, tap or Enter/Space on the marquee pauses it (remembered between pages), and Enter/Space work
-     on the theme switch. Only block comments and explicit semicolons: compress_html can join these lines. -->
+<!-- Enter/Space work on the theme switch. Only block comments and explicit semicolons: compress_html can join these lines. -->
 <script>
   (function () {
-    var marquee = document.querySelector(".masthead__marquee");
-    var stillAnyway = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    function setPaused(paused) {
-      marquee.classList.toggle("is-paused", paused);
-      marquee.setAttribute("aria-pressed", paused ? "true" : "false");
-      marquee.title = paused ? "Click to play" : "Click to pause";
-    }
-
-    function togglePaused() {
-      var paused = !marquee.classList.contains("is-paused");
-      setPaused(paused);
-      try { localStorage.setItem("marquee", paused ? "paused" : "playing"); } catch (e) {}
-    }
-
-    if (marquee && stillAnyway) {
-      /* nothing moves, so there is nothing to pause */
-      ["role", "tabindex", "aria-pressed", "aria-label", "title"].forEach(function (name) { marquee.removeAttribute(name); });
-    } else if (marquee) {
-      try { setPaused(localStorage.getItem("marquee") === "paused"); } catch (e) {}
-      marquee.addEventListener("click", togglePaused);
-      marquee.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          togglePaused();
-        }
-      });
-    }
-
     /* the theme switch is a link (the nav script claims every <button> in #site-nav), so give it button keys */
     var themeSwitch = document.querySelector("#theme-toggle a");
     if (themeSwitch) {

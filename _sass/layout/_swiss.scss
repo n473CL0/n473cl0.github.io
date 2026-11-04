@@ -1,0 +1,904 @@
+/* ==========================================================================
+   SWISS SKIN
+   International Typographic Style over the base layout: one 12-column grid
+   shared by the masthead, page and footer; one grotesk in two weights;
+   flush-left, ragged-right text; numbered section headings hung in their own
+   column; black rules and a single red.
+   Colours come from theme/_swiss_light.scss and theme/_swiss_dark.scss.
+   ========================================================================== */
+
+$sw-page-width              : 1240px;
+$sw-margin                  : 1rem;     // page margin on phones
+$sw-margin-wide             : 1.5rem;   // and from $medium up
+$sw-gutter                  : 1.5rem;
+$sw-line                    : 1.55;     // body line height; section spacing is counted in these lines
+$sw-section-space           : #{2 * $sw-line}rem;
+
+/* From $large up the page is 12 columns: the sidebar takes 3 and the content the other 9.
+   The content area is a 9-column grid with the same gutter, so its columns land exactly on the page's.
+   Inside it, section headings hang in columns 1-2, text runs in 3-8 and column 9 is left empty. */
+$sw-columns                 : 12;
+$sw-content-columns         : 9;
+
+@mixin sw-container {
+  max-width: $sw-page-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $sw-margin;
+  padding-right: $sw-margin;
+
+  @include breakpoint($medium) {
+    padding-left: $sw-margin-wide;
+    padding-right: $sw-margin-wide;
+  }
+}
+
+@mixin sw-grid($columns) {
+  display: grid;
+  grid-template-columns: repeat($columns, minmax(0, 1fr));
+  column-gap: $sw-gutter;
+}
+
+/* a section opens with a rule and a red number above its heading */
+@mixin sw-section-head {
+  counter-increment: sw-section;
+  margin: $sw-section-space 0 0.5rem;
+  padding: 0.6rem 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: $sw-line;
+  border-top: 1px solid var(--sw-rule);
+  border-bottom: 0;
+
+  &::before {
+    content: counter(sw-section, decimal-leading-zero);
+    display: block;
+    color: var(--sw-red);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/*
+   Typeface
+   ========================================================================== */
+
+/* Inter (SIL Open Font License, see assets/fonts/inter/LICENSE.txt), Latin subset. It has weight and
+   optical-size axes, so headings set large tighten up the way display grotesks do */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../fonts/inter/inter-latin-opsz-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*
+   Page
+   ========================================================================== */
+
+body {
+  /* greedy-navigation.js pads the body for a fixed masthead; this one scrolls with the page */
+  padding-top: 0 !important;
+  line-height: $sw-line;
+}
+
+::selection {
+  color: var(--sw-on-red);
+  background: var(--sw-red-field);
+}
+
+/* a red outline for keyboard users only */
+a:focus,
+button:focus {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--sw-red);
+  outline-offset: 2px;
+}
+
+hr {
+  height: 0;
+  margin: $sw-section-space 0;
+  border: 0;
+  border-top: 1px solid var(--sw-rule);
+}
+
+/* no entrance animations: the page is simply there */
+.masthead,
+#main,
+.page__footer,
+.page__hero,
+.page__hero--overlay {
+  -webkit-animation: none;
+          animation: none;
+}
+
+#main {
+  @include sw-container;
+  margin-top: 2rem;
+
+  @include breakpoint($large) {
+    @include sw-grid($sw-columns);
+    align-items: start;
+    margin-top: 3.5rem;
+
+    /* the clearfix would take up a grid cell */
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.page,
+.archive {
+  max-width: 38rem;  // a readable measure on tablets, until the grid takes over
+
+  @include breakpoint($large) {
+    grid-column: 4 / -1;
+    float: none;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* blocks stack normally; nothing on the page is floated */
+.page .page__inner-wrap,
+.page .page__inner-wrap .page__content,
+.page .page__inner-wrap .page__meta,
+.page .page__inner-wrap .page__share {
+  float: none;
+}
+
+/* the one big element on each page */
+.page__title {
+  margin: 0 0 2.5rem;
+  font-size: unquote("clamp(2.25rem, 1rem + 4.5vw, 5rem)");
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+
+  @include breakpoint($large) {
+    margin-bottom: 3rem;
+  }
+}
+
+/*
+   Masthead
+   ========================================================================== */
+
+.masthead {
+  position: relative;
+  background: var(--global-bg-color);
+
+  /* the rule is drawn under the menu instead, so it stops at the page margins */
+  &::after {
+    display: none;
+  }
+}
+
+.masthead__inner-wrap {
+  @include sw-container;
+  padding-top: 1.25rem;
+  padding-bottom: 0;
+  font-family: $sans-serif;
+}
+
+.masthead__menu {
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--sw-rule);
+}
+
+.masthead__menu-item {
+  background-color: transparent;
+}
+
+.greedy-nav {
+  min-width: 0;
+  background: transparent;
+
+  a {
+    margin: 0;
+    padding: 0.15rem 0;
+  }
+
+  /* The menu never folds into the overflow button: on narrow screens the links wrap onto a second row.
+     greedy-navigation.js only folds the menu when the list is wider than the nav, and a full-width list never is. */
+  .visible-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.25rem;
+    row-gap: 0.35rem;
+
+    li {
+      display: block;
+    }
+
+    /* row 1: the name and the theme switch; row 2: the menu */
+    &::after {
+      content: "";
+      flex-basis: 100%;
+      order: 2;
+    }
+
+    #theme-toggle {
+      order: 1;
+      margin-left: auto;
+    }
+
+    .masthead__menu-item:not(.persist) {
+      order: 3;
+    }
+
+    /* the template's sliding underline */
+    a::before {
+      display: none;
+    }
+  }
+
+  /* on desktop the name sits over the sidebar and the menu starts over the content */
+  @include breakpoint($large) {
+    .visible-links {
+      @include sw-grid($sw-columns);
+
+      &::after {
+        display: none;
+      }
+
+      .masthead__menu-item--lg {
+        grid-column: 1 / span 3;
+      }
+
+      .masthead__menu-item:not(.persist) {
+        grid-column: span 2;
+        order: 0;
+      }
+
+      #theme-toggle {
+        grid-column: -2 / -1;
+        justify-self: end;
+        margin-left: 0;
+        order: 0;
+      }
+    }
+  }
+}
+
+/* the page you're on is marked in red */
+.masthead__menu-item.selected a,
+.masthead__menu-item.selected a:hover {
+  color: var(--sw-red);
+  font-weight: inherit;
+  border-bottom: 0;
+}
+
+/* the site title: a bold logotype after a red square */
+.greedy-nav .masthead__menu-item--lg {
+  padding-right: 0;
+
+  a,
+  &.selected a {
+    color: var(--global-masthead-link-color);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  a::before {
+    content: "";
+    display: inline-block;
+    position: static;
+    width: 0.72em;
+    height: 0.72em;
+    margin-right: 0.45em;
+    background: var(--sw-red);
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
+/* the overflow menu, in case it is ever needed */
+.greedy-nav .hidden-links {
+  border: 1px solid var(--sw-rule);
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  li {
+    border-bottom-color: var(--sw-hairline);
+  }
+
+  a:hover {
+    color: var(--sw-red);
+    background: none;
+  }
+}
+
+.navicon,
+.navicon:before,
+.navicon:after {
+  background: var(--global-text-color);
+}
+
+/*
+   Sidebar
+   ========================================================================== */
+
+.sidebar {
+  margin-bottom: 2.5rem;
+  opacity: 1;
+
+  p,
+  li {
+    font-family: $sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  @include breakpoint($large) {
+    grid-column: 1 / span 3;
+    float: none;
+    width: auto;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    padding: 0 !important;  // overrides the masthead offset set by greedy-navigation.js
+    overflow: visible;
+
+    /* stays in view while the content scrolls past */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 2rem;
+  }
+}
+
+/* the portrait in black and white, square-cut */
+.author__avatar img {
+  border-radius: 0;
+  -webkit-filter: grayscale(100%);
+          filter: grayscale(100%);
+}
+
+.sidebar .author__name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.author__bio {
+  color: var(--global-text-color);
+}
+
+@include breakpoint($large) {
+  /* two of the sidebar's three columns wide */
+  .author__avatar {
+    width: calc((100% - #{2 * $sw-gutter}) / 3 * 2 + #{$sw-gutter});
+  }
+
+  .author__avatar img {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 1;
+    object-fit: cover;
+    padding: 0;
+    border: 0;
+  }
+
+  .author__content {
+    line-height: 1.5;
+  }
+
+  .sidebar .author__name {
+    margin: 1rem 0 0;
+  }
+
+  .author__bio {
+    margin: 0 0 1rem;
+  }
+}
+
+/* a typographic list: the words carry it, so the icons go */
+.author__urls {
+  border: 1px solid var(--sw-rule);
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  i {
+    display: none;
+  }
+
+  li {
+    margin-bottom: 0.1rem;
+  }
+
+  a {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  /* where you are, then how to reach you */
+  .author__desktop + li:not(.author__desktop) {
+    margin-top: 0.75rem;
+  }
+
+  @include breakpoint($large) {
+    border: 0;
+  }
+}
+
+/*
+   Reading
+   ========================================================================== */
+
+.page__content,
+.archive {
+  counter-reset: sw-section;
+
+  h3 {
+    margin: #{$sw-line}em 0 0.25em;
+    font-size: 1rem;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 #{$sw-line}em;
+    padding-left: 1.25em;
+  }
+
+  /* the en dash: the list marker of Swiss and German typesetting */
+  ul {
+    list-style-type: "\2013\00a0\00a0";
+  }
+
+  li {
+    margin-bottom: 0.5em;
+
+    &::marker {
+      color: var(--global-text-color-light);
+    }
+
+    > ul,
+    > ol {
+      margin: 0.5em 0 0;
+    }
+  }
+
+  ol > li::marker {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  blockquote {
+    margin: $sw-section-space 0;
+    padding-left: 1em;
+    font-style: normal;
+    border-left: 2px solid var(--sw-red);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.page__content p {
+  margin-bottom: #{$sw-line}em;
+}
+
+/* links: the text colour, underlined with a red rule; red on hover */
+.page__content a,
+.archive a,
+.author__urls a,
+.pager a {
+  color: var(--global-text-color);
+  text-decoration: underline;
+  text-decoration-color: var(--sw-red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+
+  &:visited {
+    color: var(--global-text-color);
+  }
+
+  &:hover {
+    color: var(--sw-red);
+    text-decoration: underline;
+  }
+}
+
+/* section headings: CV sections are Markdown h1s, project pages use h2s */
+.page__content > h2,
+.archive > h1:not(.page__title),
+.archive > h2 {
+  @include sw-section-head;
+}
+
+/* the first section straight after the title needs no extra space */
+.page__content > h2:first-child,
+.archive > .page__title + h1,
+.archive > .page__title + h2 {
+  margin-top: 0;
+}
+
+/* the facts line that opens each project page */
+.page__content > p:first-child > em:only-child {
+  display: block;
+  color: var(--global-text-color-light);
+  font-size: 0.875rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+@include breakpoint($large) {
+  .page__content,
+  .archive {
+    @include sw-grid($sw-content-columns);
+    align-items: start;
+  }
+
+  .page__content > *,
+  .archive > * {
+    grid-column: 3 / span 6;
+  }
+
+  .archive > .page__title {
+    grid-column: 1 / -1;
+  }
+
+  /* blocks that span the heading and text columns together */
+  .archive > .list__item,
+  .page__content > p:first-child:has(> em:only-child) {
+    grid-column: 1 / span 8;
+  }
+
+  /* a heading over a list of pages (the sitemap) runs across the list instead of beside it */
+  .archive > h2:has(+ .list__item) {
+    grid-column: 1 / span 8;
+    margin-bottom: 0.75rem;
+  }
+
+  /* headings hang in the left two columns, level with the first line of their text. Margins don't
+     collapse in a grid, so one line here plus the line under the previous block makes the usual two */
+  .page__content > h2,
+  .archive > h1:not(.page__title),
+  .archive > h2 {
+    grid-column: 1 / span 2;
+    margin-top: #{$sw-line}rem;
+    margin-bottom: 0;
+  }
+
+  /* the text beside each heading opens with the same rule, broken only by the gutter */
+  .page__content > h2 + *,
+  .archive > h1:not(.page__title) + *,
+  .archive > h2 + :not(.list__item) {
+    margin-top: #{$sw-line}rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--sw-rule);
+  }
+
+  .archive > .page__title + h1,
+  .archive > .page__title + h2,
+  .page__content > h2:first-child + *,
+  .archive > .page__title + h1 + *,
+  .archive > .page__title + h2 + * {
+    margin-top: 0;
+  }
+
+  /* bullets hang in the gutter, so list text keeps the column's left edge */
+  .page__content > ul,
+  .page__content > ol,
+  .archive > ul,
+  .archive > ol {
+    padding-left: 0;
+  }
+}
+
+/*
+   Lists of projects, tables and buttons
+   ========================================================================== */
+
+/* a numbered index, one project per rule */
+.archive {
+  counter-reset: sw-section sw-item;
+
+  > h2 {
+    counter-reset: sw-item;
+  }
+}
+
+.archive__item {
+  counter-increment: sw-item;
+  padding: 0.75rem 0 1.5rem;
+  border-top: 1px solid var(--sw-hairline);
+
+  &::before {
+    content: counter(sw-item, decimal-leading-zero);
+    display: block;
+    color: var(--sw-red);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  p {
+    margin: 0;
+    color: var(--global-text-color-light);
+  }
+
+  /* markdownify nests a <p> inside the excerpt's <p>, so the text lands in the paragraph after it */
+  p:not(:empty) {
+    margin-top: 0.35rem;
+  }
+}
+
+.archive__item-title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+
+  a,
+  a:visited {
+    text-decoration: none;
+  }
+}
+
+@include breakpoint($large) {
+  .archive__item {
+    @include sw-grid($sw-content-columns - 1);
+
+    &::before {
+      grid-column: 1 / span 2;
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+
+    > * {
+      grid-column: 3 / span 6;
+    }
+  }
+}
+
+/* shown on Portfolio / Research while every project is a draft: a solid red field */
+.under-construction {
+  margin: 0 0 2rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  color: var(--sw-on-red);
+  background: var(--sw-red-field);
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 0.5rem;
+  }
+
+  a,
+  a:visited,
+  a:hover {
+    color: inherit;
+    text-decoration-color: currentColor;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  a:focus-visible {
+    outline-color: currentColor;
+  }
+
+  &__sign {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  @include breakpoint($large) {
+    .archive > & {
+      grid-column: 1 / span 6;
+    }
+  }
+}
+
+/* previous / back to index / next, under each project: three cells, each three columns wide */
+.pager {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: $sw-gutter;
+  row-gap: 1rem;
+  margin-top: $sw-section-space;
+  padding-top: 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  border-top: 1px solid var(--sw-rule);
+
+  a,
+  a:visited {
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  &__label {
+    display: block;
+    color: var(--global-text-color-light);
+  }
+
+  @include breakpoint(max-width $small) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    &__up {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+}
+
+/* the (empty) taxonomy footer between the content and the pager only adds a gap */
+footer.page__meta {
+  margin-top: 0;
+}
+
+.page__share {
+  margin-top: $sw-section-space;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--sw-hairline);
+}
+
+table {
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  border: 0;
+}
+
+thead {
+  background: none;
+  border-bottom: 1px solid var(--sw-rule);
+}
+
+th,
+td {
+  padding: 0.5em 1em 0.5em 0;
+  border: 0;
+}
+
+td {
+  border-bottom: 1px solid var(--sw-hairline);
+}
+
+.btn,
+.btn--inverse {
+  color: var(--global-text-color) !important;
+  font-weight: 700;
+  background: transparent;
+  border: 1px solid var(--sw-rule) !important;
+
+  &:hover {
+    color: var(--sw-on-red) !important;
+    background: var(--sw-red-field);
+    border-color: var(--sw-red-field) !important;
+  }
+}
+
+/*
+   Footer
+   ========================================================================== */
+
+/* sits at the foot of the page, in the space _main.js reserves below the body */
+.page__footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  float: none;
+  margin-top: 0;
+  color: var(--global-text-color-light);
+  background-color: var(--global-bg-color);
+  border-top: 0;
+
+  footer {
+    @include sw-container;
+    margin-top: 0;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+
+    &::before {
+      content: "";
+      display: block;
+      margin-bottom: 1rem;
+      border-top: 1px solid var(--sw-rule);
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: var(--sw-hairline);
+    text-underline-offset: 0.22em;
+
+    &:hover {
+      color: var(--sw-red);
+      text-decoration: underline;
+      text-decoration-color: currentColor;
+    }
+  }
+
+  /* the copyright text runs under the content column */
+  @include breakpoint($large) {
+    footer {
+      @include sw-grid($sw-columns);
+
+      &::before {
+        grid-column: 1 / -1;
+      }
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+}
+
+.page__footer-copyright {
+  font-family: $sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+
+  @include breakpoint($large) {
+    grid-column: 4 / -1;
+  }
+}
+
+/*
+   Print: black on white, without the portrait, links list or pager (in either theme)
+   ========================================================================== */
+
+@media print {
+  :root,
+  html[data-theme="dark"] {
+    --global-bg-color                   : #fff;
+    --global-text-color                 : #000;
+    --global-text-color-light           : #333;
+    --global-link-color                 : #000;
+    --global-link-color-hover           : #000;
+    --global-link-color-visited         : #000;
+    --global-code-text-color            : #000;
+    --global-code-background-color      : transparent;
+    --sw-red                            : #000;
+    --sw-red-field                      : transparent;
+    --sw-on-red                         : #000;
+    --sw-rule                           : #000;
+    --sw-hairline                       : #999;
+  }
+
+  .author__avatar,
+  .author__urls-wrapper,
+  .page__share,
+  .pager {
+    display: none;
+  }
+
+  .under-construction {
+    padding: 0;
+  }
+
+  .page__content a,
+  .archive a {
+    text-decoration: none;
+  }
+}

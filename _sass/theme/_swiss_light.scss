@@ -1,0 +1,67 @@
+/* ==========================================================================
+    SWISS THEME - LIGHT VERSION
+    International Typographic Style: one grotesk typeface, black on white,
+    and a single red for emphasis.
+    ========================================================================== */
+
+/* One sans-serif family for everything. Inter is self-hosted (see layout/_swiss.scss),
+   with the classic Swiss grotesks as fallbacks */
+$sans-serif                 : "Inter Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$sans-serif-narrow          : $sans-serif;
+$monospace                  : ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+$global-font-family         : $sans-serif;
+$header-font-family         : $sans-serif;
+$caption-font-family        : $sans-serif;
+
+/* Color codes used for the theme */
+$primary-color              : #da291c;  // Swiss flag red (Pantone 485 C)
+$gray                       : #5c5c5c;
+$dark-gray                  : #2b2b2b;
+$darker-gray                : #111;
+$light-gray                 : #d9d9d9;
+$lighter-gray               : #f2f2f2;
+
+/* Color codes used for the site */
+$danger-color               : $primary-color;
+$info-color                 : $darker-gray;
+$notice-color               : $gray;
+$success-color              : $darker-gray;
+$warning-color              : $primary-color;
+
+/* Other basic settings for the template */
+$border-radius              : 0;
+$box-shadow                 : none;
+$global-transition          : none;
+$masthead-height            : 0;  // the masthead scrolls with the page, so nothing needs to clear it
+$navicon-width              : 20px;
+$navicon-height             : 2px;
+$sidebar-link-max-width     : 250px;
+$sidebar-screen-min-width   : 1024px;
+
+/* Swiss light theme for the site */
+:root {
+    color-scheme                        : light;
+
+    --global-base-color                 : #{$primary-color};
+    --global-bg-color                   : #fff;
+    --global-footer-bg-color            : #fff;
+    --global-border-color               : #{$light-gray};
+    --global-dark-border-color          : #{$darker-gray};
+    --global-code-background-color      : #{$lighter-gray};
+    --global-code-text-color            : #{$darker-gray};
+    --global-fig-caption-color          : #{$gray};
+    --global-link-color                 : #{$darker-gray};
+    --global-link-color-hover           : #{$primary-color};
+    --global-link-color-visited         : #{$darker-gray};
+    --global-masthead-link-color        : #{$darker-gray};
+    --global-masthead-link-color-hover  : #{$primary-color};
+    --global-text-color                 : #{$darker-gray};
+    --global-text-color-light           : #{$gray};
+    --global-thead-color                : #{$lighter-gray};
+
+    --sw-red                            : #{$primary-color};  // red text and marks on the page
+    --sw-red-field                      : #{$primary-color};  // solid red areas, with --sw-on-red text
+    --sw-on-red                         : #fff;
+    --sw-rule                           : #{$darker-gray};    // rules that open a section
+    --sw-hairline                       : #{$light-gray};     // rules between items
+}
