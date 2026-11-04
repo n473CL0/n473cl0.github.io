@@ -639,10 +639,17 @@ hr {
   line-height: 1.3;
   letter-spacing: -0.01em;
 
+  /* titles carry no underline until the link is hovered, and then only the link's own one */
   a,
   a:visited {
     text-decoration: none;
   }
+}
+
+/* the base theme also underlines the whole title while the item is hovered, which drew a second line
+   under the link's own underline */
+.archive__item:hover .archive__item-title {
+  text-decoration: none;
 }
 
 /* shown on Portfolio / Research while every project is a draft: a solid field in the ghost's colour */
